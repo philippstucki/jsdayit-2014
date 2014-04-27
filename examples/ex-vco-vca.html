@@ -29,15 +29,16 @@ var playNote = function() {
     env.gain.linearRampToValueAtTime(0, now + r);
 };
 
+// (…)<span class="hidden">
 var osc = ctx.createOscillator();
 osc.type = 'square';
 osc.frequency.value = 70;
 osc.connect(env);
 osc.start(0);
+// </span>
 
 $('#play').on('click', playNote);
 $(window).on('keydown', playNote);
-
 
 </pre>
         </div>
@@ -57,15 +58,16 @@ var playNote = function() {
     env.gain.linearRampToValueAtTime(0, now + r);
 };
 
+// (…)<span class="hidden">
 var osc = ctx.createOscillator();
 osc.type = 'square';
 osc.frequency.value = 70;
 osc.connect(env);
 osc.start(0);
+// </span>
 
 $('#play').on('click', playNote);
 $(window).on('keydown', playNote);
-
 
         </script>
     </body>

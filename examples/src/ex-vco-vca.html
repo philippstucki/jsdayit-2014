@@ -14,15 +14,16 @@ var playNote = function() {
     env.gain.linearRampToValueAtTime(0, now + r);
 };
 
+// hidecode
 var osc = ctx.createOscillator();
 osc.type = 'square';
 osc.frequency.value = 70;
 osc.connect(env);
 osc.start(0);
+// endhidecode
 
 $('#play').on('click', playNote);
 $(window).on('keydown', playNote);
-
 {% endmacro %}
 
 {% block content_top %}

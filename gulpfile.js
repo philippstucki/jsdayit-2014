@@ -7,6 +7,8 @@ var gulp = require('gulp'),
 gulp.task('examples', function() {
     return gulp.src(paths.examples)
     .pipe(plugins.nunjucksRender())
+    .pipe(plugins.replace(/\/\/(\s+)hidecode/g, '// (…)<span class="hidden">'))
+    .pipe(plugins.replace(/\/\/(\s+)endhidecode/g, '// </span>'))
     .pipe(gulp.dest('examples/'));
 });
 

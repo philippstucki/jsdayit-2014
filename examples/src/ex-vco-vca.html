@@ -1,0 +1,36 @@
+{%- set title = "OSC + Envelope" -%}
+{% extends "examples/src/layout.html" %}
+
+{%- macro examplescript() -%}
+var env = ctx.createGain();
+env.gain.value = 0;
+env.connect(ctx.destination);
+
+var playNote = function() {
+    var r = parseFloat($('#r').val());
+    var now = ctx.currentTime;
+    env.gain.cancelScheduledValues(now);
+    env.gain.setValueAtTime(1, now);
+    env.gain.linearRampToValueAtTime(0, now + r);
+};
+
+var osc = ctx.createOscillator();
+osc.type = 'square';
+osc.frequency.value = 70;
+osc.connect(env);
+osc.start(0);
+
+$('#play').on('click', playNote);
+$(window).on('keydown', playNote);
+
+{% endmacro %}
+
+{% block content_top %}
+<label for="f">ENV Release Time</label>
+<input type="range" id="r" value="0.3" class="slider" min="0.01" max="1" step="0.01"></input>
+<button id="play">Play Note</button>
+{% endblock %}
+
+{% block content_bottom %}
+{{ examplescript() }}
+{% endblock %}

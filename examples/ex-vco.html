@@ -1,0 +1,48 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Web Audio API - Example: Simple Square Oscillator</title>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="top">
+            <h1>Simple Square Oscillator</h1>
+            
+<label for="f">OSC Frequency</label>
+<input type="range" id="f" value="70" class="slider" min="1" max="1000"></input>
+<button onclick="osc.disconnect()">Stop</button>
+
+        </div>
+        <div class="bottom">
+            <pre>
+var osc = ctx.createOscillator();
+osc.type = 'square';
+osc.frequency.value = 70;
+osc.connect(ctx.destination);
+osc.start(0);
+
+$('#f').on('input', function() {
+    osc.frequency.value = $(this).val();
+});
+
+</pre>
+        </div>
+        <script src="lib/jquery-1.11.0.min.js"></script>
+        <script>
+            var AudioContext = window.AudioContext || window.webkitAudioContext;
+            var ctx = new AudioContext();
+var osc = ctx.createOscillator();
+osc.type = 'square';
+osc.frequency.value = 70;
+osc.connect(ctx.destination);
+osc.start(0);
+
+$('#f').on('input', function() {
+    osc.frequency.value = $(this).val();
+});
+
+        </script>
+    </body>
+</html>

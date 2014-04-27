@@ -1,0 +1,27 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Web Audio API - Example: {{ title }}</title>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="top">
+            <h1>{{ title }}</h1>
+            {% block content_top %}
+            {% endblock %}
+        </div>
+        <div class="bottom">
+            <pre>{%- block content_bottom -%}
+            {%- endblock -%}
+            </pre>
+        </div>
+        <script src="lib/jquery-1.11.0.min.js"></script>
+        <script>
+            var AudioContext = window.AudioContext || window.webkitAudioContext;
+            var ctx = new AudioContext();
+{{ examplescript() }}
+        </script>
+    </body>
+</html>

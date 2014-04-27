@@ -1,0 +1,58 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Web Audio API - Example: Simple Oscillator</title>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="top">
+            
+<label for="f">OSC Frequency</label>
+<input type="text" id="f" value="70" class="knob" data-min="1" data-max="1000"></input>
+
+            <button onclick="osc.disconnect()" style="display:block;">Stop</button>
+        </div>
+        <div class="bottom">
+            <pre>
+var osc = ctx.createOscillator();
+osc.type = 'square';
+osc.frequency.value = 70;
+osc.connect(ctx.destination);
+osc.start(0);
+
+$('#f').on('knob.change', function(e, val) {
+    osc.frequency.value = val;
+});
+
+</pre>
+        </div>
+        <script src="lib/jquery-1.11.0.min.js"></script>
+        <script src="lib/jquery.knob.js"></script>
+        <script>
+            var AudioContext = window.AudioContext || window.webkitAudioContext;
+            var ctx = new AudioContext();
+
+            $('.knob').knob({
+                width: 80,
+                height: 80,
+                angleOffset: -125,
+                angleArc: 250,
+                change: function(val) {
+                    this.$.trigger('knob.change', val)
+                }
+            });
+var osc = ctx.createOscillator();
+osc.type = 'square';
+osc.frequency.value = 70;
+osc.connect(ctx.destination);
+osc.start(0);
+
+$('#f').on('knob.change', function(e, val) {
+    osc.frequency.value = val;
+});
+
+        </script>
+    </body>
+</html>

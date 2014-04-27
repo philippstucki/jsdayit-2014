@@ -1,0 +1,24 @@
+{%- set title = "Simple Square Oscillator" -%}
+{% extends "examples/src/layout.html" %}
+
+{%- macro examplescript() -%}
+var osc = ctx.createOscillator();
+osc.type = 'square';
+osc.frequency.value = 70;
+osc.connect(ctx.destination);
+osc.start(0);
+
+$('#f').on('input', function() {
+    osc.frequency.value = $(this).val();
+});
+{% endmacro %}
+
+{% block content_top %}
+<label for="f">OSC Frequency</label>
+<input type="range" id="f" value="70" class="slider" min="1" max="1000"></input>
+<button onclick="osc.disconnect()">Stop</button>
+{% endblock %}
+
+{% block content_bottom %}
+{{ examplescript() }}
+{% endblock %}

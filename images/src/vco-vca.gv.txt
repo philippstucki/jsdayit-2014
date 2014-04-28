@@ -1,0 +1,3 @@
+digraph G {
+    Oscillator->Gain->destination
+}

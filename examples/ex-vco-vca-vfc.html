@@ -8,35 +8,32 @@
     </head>
     <body>
         <div class="top">
-            <div class="wrapper">
-                <!--<h1>OSC + Envelope</h1>-->
-                
-<label for="r">Release Time</label>
+            <h1>OSC + Envelope</h1>
+            
+<label for="f">ENV Release Time</label>
 <input type="range" id="r" value="0.3" class="slider" min="0.01" max="1" step="0.01"></input>
 <button id="play">Play Note</button>
 
-            </div>
         </div>
         <div class="bottom">
-            <div class="wrapper">
-                <pre>
-function startNote() {
+            <pre>
+var env = ctx.createGain();
+env.gain.value = 0;
+env.connect(ctx.destination);
+
+var startNote = function() {
     var now = ctx.currentTime;
     env.gain.cancelScheduledValues(now);
     env.gain.setValueAtTime(1, now);
-}
+};
 
-function stopNote() {
+var stopNote = function() {
     var r = parseFloat($('#r').val());
     var now = ctx.currentTime;
     env.gain.cancelScheduledValues(now);
     env.gain.setValueAtTime(env.gain.value, now);
     env.gain.linearRampToValueAtTime(0, now + r);
-}
-
-var env = ctx.createGain();
-env.gain.value = 0;
-env.connect(ctx.destination);
+};
 
 // (…)<span class="hidden">
 var osc = ctx.createOscillator();
@@ -46,37 +43,34 @@ osc.start(0);
 // </span>
 osc.connect(env);
 
-// (…)<span class="hidden">
 $('#play').on('mousedown', startNote);
 $('#play').on('mouseup', stopNote);
 $(window).on('keypress', startNote);
 $(window).on('keyup', stopNote);
-// </span>
 
 </pre>
-            </div>
         </div>
         <script src="lib/jquery-1.11.0.min.js"></script>
         <script>
             var AudioContext = window.AudioContext || window.webkitAudioContext;
             var ctx = new AudioContext();
-function startNote() {
+var env = ctx.createGain();
+env.gain.value = 0;
+env.connect(ctx.destination);
+
+var startNote = function() {
     var now = ctx.currentTime;
     env.gain.cancelScheduledValues(now);
     env.gain.setValueAtTime(1, now);
-}
+};
 
-function stopNote() {
+var stopNote = function() {
     var r = parseFloat($('#r').val());
     var now = ctx.currentTime;
     env.gain.cancelScheduledValues(now);
     env.gain.setValueAtTime(env.gain.value, now);
     env.gain.linearRampToValueAtTime(0, now + r);
-}
-
-var env = ctx.createGain();
-env.gain.value = 0;
-env.connect(ctx.destination);
+};
 
 // (…)<span class="hidden">
 var osc = ctx.createOscillator();
@@ -86,12 +80,10 @@ osc.start(0);
 // </span>
 osc.connect(env);
 
-// (…)<span class="hidden">
 $('#play').on('mousedown', startNote);
 $('#play').on('mouseup', stopNote);
 $(window).on('keypress', startNote);
 $(window).on('keyup', stopNote);
-// </span>
 
         </script>
     </body>

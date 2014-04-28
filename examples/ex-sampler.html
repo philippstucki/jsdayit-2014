@@ -1,0 +1,115 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Web Audio API - Example: Sample Player</title>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="top">
+            <div class="wrapper">
+                <!--<h1>Sample Player</h1>-->
+                
+<button id="start">Start</button>
+<button id="stop">Stop</button>
+<label>Loop<input type="checkbox" id="loop"></input></label>
+<label>Loop start<input type="range" id="loopstart" value="0" min="0" max="1" step="0.01"></input></label>
+<label>Loop end<input type="range" id="loopend" value="1" min="0" max="1" step="0.01"></input></label>
+<label>Playback Rate<input type="range" id="rate" value="1" min="0.1" max="2" step="0.1"></input></label>
+
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="wrapper">
+                <pre>
+var drumloop={};
+
+function startLoop() {
+    drumloop.source = ctx.createBufferSource();
+    drumloop.source.buffer = drumloop.buffer;
+    drumloop.source.loop = $('#loop').prop('checked');
+    drumloop.source.connect(ctx.destination);
+    setLoopParams();
+    drumloop.source.start(0);
+}
+
+function stopLoop() {
+    drumloop.source.stop(0);
+}
+
+function setLoopParams() {
+    drumloop.source.loopStart = drumloop.buffer.duration * $('#loopstart').val();
+    drumloop.source.loopEnd = drumloop.buffer.duration * $('#loopend').val();
+    drumloop.source.playbackRate.value = $('#rate').val();
+}
+
+loadBuffer('audiofiles/dnb1.ogg', drumloop);
+
+$('#start').on('click', startLoop);
+$('#stop').on('click', stopLoop);
+$('input[type=range]').on('input', setLoopParams);
+
+function loadBuffer(url, dest) {
+    var r = new XMLHttpRequest();
+    r.open('GET', url, true);
+    r.responseType = 'arraybuffer';
+    r.onload = function() {
+        ctx.decodeAudioData(r.response, function(buffer) {
+            dest.buffer = buffer;
+        });
+    };
+    r.send();
+}
+
+
+</pre>
+            </div>
+        </div>
+        <script src="lib/jquery-1.11.0.min.js"></script>
+        <script>
+            var AudioContext = window.AudioContext || window.webkitAudioContext;
+            var ctx = new AudioContext();
+var drumloop={};
+
+function startLoop() {
+    drumloop.source = ctx.createBufferSource();
+    drumloop.source.buffer = drumloop.buffer;
+    drumloop.source.loop = $('#loop').prop('checked');
+    drumloop.source.connect(ctx.destination);
+    setLoopParams();
+    drumloop.source.start(0);
+}
+
+function stopLoop() {
+    drumloop.source.stop(0);
+}
+
+function setLoopParams() {
+    drumloop.source.loopStart = drumloop.buffer.duration * $('#loopstart').val();
+    drumloop.source.loopEnd = drumloop.buffer.duration * $('#loopend').val();
+    drumloop.source.playbackRate.value = $('#rate').val();
+}
+
+loadBuffer('audiofiles/dnb1.ogg', drumloop);
+
+$('#start').on('click', startLoop);
+$('#stop').on('click', stopLoop);
+$('input[type=range]').on('input', setLoopParams);
+
+function loadBuffer(url, dest) {
+    var r = new XMLHttpRequest();
+    r.open('GET', url, true);
+    r.responseType = 'arraybuffer';
+    r.onload = function() {
+        ctx.decodeAudioData(r.response, function(buffer) {
+            dest.buffer = buffer;
+        });
+    };
+    r.send();
+}
+
+
+        </script>
+    </body>
+</html>

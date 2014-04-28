@@ -1,0 +1,4 @@
+digraph G {
+    Oscillator->BiquadFilter->Gain->destination[penwidth=3]
+    {frequency[shape=box] Q[shape=box]}->BiquadFilter[style=dotted]
+}

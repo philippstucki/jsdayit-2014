@@ -1,0 +1,57 @@
+{%- set title = "Sample Player" -%}
+{% extends "examples/src/layout.html" %}
+
+{%- macro examplescript() -%}
+var drumloop={};
+
+function startLoop() {
+    drumloop.source = ctx.createBufferSource();
+    drumloop.source.buffer = drumloop.buffer;
+    drumloop.source.loop = $('#loop').prop('checked');
+    drumloop.source.connect(ctx.destination);
+    setLoopParams();
+    drumloop.source.start(0);
+}
+
+function stopLoop() {
+    drumloop.source.stop(0);
+}
+
+function setLoopParams() {
+    drumloop.source.loopStart = drumloop.buffer.duration * $('#loopstart').val();
+    drumloop.source.loopEnd = drumloop.buffer.duration * $('#loopend').val();
+    drumloop.source.playbackRate.value = $('#rate').val();
+}
+
+loadBuffer('audiofiles/dnb1.ogg', drumloop);
+
+$('#start').on('click', startLoop);
+$('#stop').on('click', stopLoop);
+$('input[type=range]').on('input', setLoopParams);
+
+function loadBuffer(url, dest) {
+    var r = new XMLHttpRequest();
+    r.open('GET', url, true);
+    r.responseType = 'arraybuffer';
+    r.onload = function() {
+        ctx.decodeAudioData(r.response, function(buffer) {
+            dest.buffer = buffer;
+        });
+    };
+    r.send();
+}
+
+{% endmacro %}
+
+{% block content_top %}
+<button id="start">Start</button>
+<button id="stop">Stop</button>
+<label>Loop<input type="checkbox" id="loop"></input></label>
+<label>Loop start<input type="range" id="loopstart" value="0" min="0" max="1" step="0.01"></input></label>
+<label>Loop end<input type="range" id="loopend" value="1" min="0" max="1" step="0.01"></input></label>
+<label>Playback Rate<input type="range" id="rate" value="1" min="0.1" max="2" step="0.1"></input></label>
+{% endblock %}
+
+{% block content_bottom %}
+{{ examplescript() }}
+{% endblock %}

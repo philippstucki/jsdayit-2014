@@ -2,6 +2,7 @@
 {% extends "examples/src/layout.html" %}
 
 {%- macro examplescript() -%}
+// hidecode
 function startNote() {
     var now = ctx.currentTime;
     env.gain.cancelScheduledValues(now);
@@ -15,10 +16,10 @@ function stopNote() {
     env.gain.setValueAtTime(env.gain.value, now);
     env.gain.linearRampToValueAtTime(0, now + r);
 }
-
 var env = ctx.createGain();
 env.gain.value = 0;
 env.connect(ctx.destination);
+// endhidecode
 
 // hidecode
 var osc = ctx.createOscillator();
@@ -26,7 +27,19 @@ osc.type = 'square';
 osc.frequency.value = 70;
 osc.start(0);
 // endhidecode
-osc.connect(env);
+
+var filter = ctx.createBiquadFilter();
+filter.type = 'lowpass';
+
+osc.connect(filter);
+filter.connect(env);
+
+$('#filter_f').on('input', function() {
+    filter.frequency.value = $(this).val();
+});
+$('#filter_q').on('input', function() {
+    filter.Q.value = $(this).val();
+});
 
 // hidecode
 $('#play').on('mousedown', startNote);
@@ -37,8 +50,10 @@ $(window).on('keyup', stopNote);
 {% endmacro %}
 
 {% block content_top %}
-<label for="r">Release Time</label>
-<input type="range" id="r" value="0.3" class="slider" min="0.01" max="1" step="0.01"></input>
+<label for="filter_f">Filter frequency</label>
+<input type="range" id="filter_f" value="400" min="10" max="10000" step="1"></input>
+<label for="filter_f">Filter Quality</label>
+<input type="range" id="filter_q" value="1" min="0.01" max="30" step="0.01"></input>
 <button id="play">Play Note</button>
 {% endblock %}
 

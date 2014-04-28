@@ -3,29 +3,30 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Web Audio API - Example: {{ title }}</title>
+        <title>Web Audio API - Example: Convolution</title>
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
         <div class="top">
             <div class="wrapper">
-                <!--<h1>{{ title }}</h1>-->
-                {% block content_top %}
-                {% endblock %}
+                <!--<h1>Convolution</h1>-->
+                
+<button id="play">Play Note</button>
+
             </div>
         </div>
         <div class="bottom">
             <div class="wrapper">
-                <pre>{%- block content_bottom -%}
-                {%- endblock -%}
-                </pre>
+                <pre>
+
+</pre>
             </div>
         </div>
         <script src="lib/jquery-1.11.0.min.js"></script>
         <script>
             var AudioContext = window.AudioContext || window.webkitAudioContext;
             var ctx = new AudioContext();
-{{ examplescript() }}
+
         </script>
     </body>
 </html>

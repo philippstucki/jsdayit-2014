@@ -8,15 +8,18 @@
     </head>
     <body>
         <div class="top">
-            <h1>Simple Square Oscillator</h1>
-            
+            <div class="wrapper">
+                <!--<h1>Simple Square Oscillator</h1>-->
+                
 <label for="f">OSC Frequency</label>
 <input type="range" id="f" value="70" class="slider" min="1" max="1000"></input>
 <button onclick="osc.disconnect()">Stop</button>
 
+            </div>
         </div>
         <div class="bottom">
-            <pre>
+            <div class="wrapper">
+                <pre>
 var osc = ctx.createOscillator();
 osc.type = 'square';
 osc.frequency.value = 70;
@@ -28,6 +31,7 @@ $('#f').on('input', function() {
 });
 
 </pre>
+            </div>
         </div>
         <script src="lib/jquery-1.11.0.min.js"></script>
         <script>

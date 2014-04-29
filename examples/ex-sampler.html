@@ -9,7 +9,6 @@
     <body>
         <div class="top">
             <div class="wrapper">
-                <!--<h1>Sample Player</h1>-->
                 
 <button id="start">Start</button>
 <button id="stop">Stop</button>
@@ -26,6 +25,7 @@
 var drumloop={};
 
 function startLoop() {
+    if (drumloop.source) drumloop.source.stop(0);
     drumloop.source = ctx.createBufferSource();
     drumloop.source.buffer = drumloop.buffer;
     drumloop.source.loop = $('#loop').prop('checked');
@@ -44,12 +44,13 @@ function setLoopParams() {
     drumloop.source.playbackRate.value = $('#rate').val();
 }
 
-loadBuffer('audiofiles/dnb1.ogg', drumloop);
+loadBuffer('audiofiles/amenbreak.mp3', drumloop);
 
 $('#start').on('click', startLoop);
 $('#stop').on('click', stopLoop);
-$('input[type=range]').on('input', setLoopParams);
+$('input[type=range]').on('input change', setLoopParams);
 
+// (…)<span class="hidden">
 function loadBuffer(url, dest) {
     var r = new XMLHttpRequest();
     r.open('GET', url, true);
@@ -61,6 +62,7 @@ function loadBuffer(url, dest) {
     };
     r.send();
 }
+// </span>
 
 
 </pre>
@@ -73,6 +75,7 @@ function loadBuffer(url, dest) {
 var drumloop={};
 
 function startLoop() {
+    if (drumloop.source) drumloop.source.stop(0);
     drumloop.source = ctx.createBufferSource();
     drumloop.source.buffer = drumloop.buffer;
     drumloop.source.loop = $('#loop').prop('checked');
@@ -91,12 +94,13 @@ function setLoopParams() {
     drumloop.source.playbackRate.value = $('#rate').val();
 }
 
-loadBuffer('audiofiles/dnb1.ogg', drumloop);
+loadBuffer('audiofiles/amenbreak.mp3', drumloop);
 
 $('#start').on('click', startLoop);
 $('#stop').on('click', stopLoop);
-$('input[type=range]').on('input', setLoopParams);
+$('input[type=range]').on('input change', setLoopParams);
 
+// (…)<span class="hidden">
 function loadBuffer(url, dest) {
     var r = new XMLHttpRequest();
     r.open('GET', url, true);
@@ -108,6 +112,7 @@ function loadBuffer(url, dest) {
     };
     r.send();
 }
+// </span>
 
 
         </script>

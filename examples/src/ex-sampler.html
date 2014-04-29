@@ -5,6 +5,7 @@
 var drumloop={};
 
 function startLoop() {
+    if (drumloop.source) drumloop.source.stop(0);
     drumloop.source = ctx.createBufferSource();
     drumloop.source.buffer = drumloop.buffer;
     drumloop.source.loop = $('#loop').prop('checked');
@@ -23,12 +24,13 @@ function setLoopParams() {
     drumloop.source.playbackRate.value = $('#rate').val();
 }
 
-loadBuffer('audiofiles/dnb1.ogg', drumloop);
+loadBuffer('audiofiles/amenbreak.mp3', drumloop);
 
 $('#start').on('click', startLoop);
 $('#stop').on('click', stopLoop);
-$('input[type=range]').on('input', setLoopParams);
+$('input[type=range]').on('input change', setLoopParams);
 
+// hidecode
 function loadBuffer(url, dest) {
     var r = new XMLHttpRequest();
     r.open('GET', url, true);
@@ -40,6 +42,7 @@ function loadBuffer(url, dest) {
     };
     r.send();
 }
+// endhidecode
 
 {% endmacro %}
 

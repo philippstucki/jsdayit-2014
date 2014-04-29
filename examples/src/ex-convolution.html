@@ -2,10 +2,69 @@
 {% extends "examples/src/layout.html" %}
 
 {%- macro examplescript() -%}
+var drumloop = {};
+
+loadBuffer('audiofiles/amenbreak.mp3', function (buffer) {
+    drumloop.buffer = buffer;
+});
+
+loadBuffer('audiofiles/room.mp3', function (buffer) {
+    convolver.buffer = buffer;
+});
+
+var convolver = ctx.createConvolver();
+var wetgain = ctx.createGain();
+var drygain = ctx.createGain();
+wetgain.gain.value = 0;
+drygain.gain.value = 1;
+convolver.connect(wetgain);
+wetgain.connect(ctx.destination);
+drygain.connect(ctx.destination);
+
+$('#wetgain').on('input change', function () {
+    wetgain.gain.value = $(this).val();
+});
+
+$('#drygain').on('input change', function () {
+    drygain.gain.value = $(this).val();
+});
+
+// hidecode
+$('#start').on('click', startLoop);
+$('#stop').on('click', stopLoop);
+
+function startLoop() {
+    if (drumloop.source) drumloop.source.stop(0);
+    drumloop.source = ctx.createBufferSource();
+    drumloop.source.buffer = drumloop.buffer;
+    drumloop.source.loop = true;
+    drumloop.source.connect(convolver);
+    drumloop.source.connect(drygain);
+    drumloop.source.start(0);
+}
+
+function stopLoop() {
+    drumloop.source.stop(0);
+}
+function loadBuffer(url, cb) {
+    var r = new XMLHttpRequest();
+    r.open('GET', url, true);
+    r.responseType = 'arraybuffer';
+    r.onload = function() {
+        ctx.decodeAudioData(r.response, function(buffer) {
+            cb.call(this, buffer);
+        });
+    };
+    r.send();
+}
+// endhidecode
 {% endmacro %}
 
 {% block content_top %}
-<button id="play">Play Note</button>
+<button id="start">Start</button>
+<button id="stop">Stop</button>
+<label>Wet gain<input type="range" id="wetgain" value="0" min="0" max="1" step="0.1"></input></label>
+<label>Dry gain<input type="range" id="drygain" value="1" min="0" max="1" step="0.1"></input></label>
 {% endblock %}
 
 {% block content_bottom %}

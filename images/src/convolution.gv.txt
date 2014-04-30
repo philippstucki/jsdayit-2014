@@ -1,0 +1,8 @@
+digraph G {
+    node [fontname = "Arial,sans-serif"];
+    wetgain [label="Gain (wet)"];
+    drygain [label="Gain (dry)"];
+    Convolver->wetgain->destination;
+    BufferSource->Convolver;
+    BufferSource->drygain->destination;
+}

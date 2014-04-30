@@ -1,12 +1,14 @@
 # Web Audio API Talk Ideas
 
-## About
-- Interested in programming, synthsizers, math, electronics
-- JavaScript, PHP
-- Consulting, implementation
+## About Me
+ - Interested in programming, synthsizers, math, electronics
+ - JavaScript, PHP, etc.
+ - Consulting, design and implementation of web applications
 
+## About You
+ - Who has used the Web Audio API?
 
-## Basic Features
+## Web Audio API Overview
  - Modular Routing
  - Sample-accurate scheduled playback
  - Low latency
@@ -15,29 +17,68 @@
  - Process live audio acquired using getUserMedia()
  - Oscillators
  - Biquad filter
- - Audio processing in JavaScript
  - Convolution engine for reverb effects
+ - Audio processing in JavaScript
  - Dynamics processor
- - Waveshaping
  - Spatialized audio for 3D effects
  - Time-domain and frequency-domain analysis
  - WebRTC integration: sending and receiving audio
- - Channel splitting/merging
 
 ## Browser Support
+ - Chrome: Y
+ - Firefox: Y
+ - Safari: Y
+ - Opera: Y
+ - iOS Safari: Y
+ - Android Chrome: Y
+ - Firefox Chrome: Y
 
 ## AudioContext Interface
+ - Creates AudioNodes
+ - Contains the routing graph
+
+## Context Clock
+ - is a float
+ - starts at zero on context creation
+ - increases in real-time
+ - cannot be stopped or paused
+ - all audio events are relative to this clock
 
 ## AudioNode Interface
+ - Parent class for all input/output and processing nodes
+ - belongs to AudioContext
+ - has inputs and outputs
+    - multiple nodes can be connected as input
+    - an output can fan-out to multiple nodes
+ - connect()
+ - disconnect()
+ - audio data is processed as blocks of 128 samples
 
-## Example Synthesizer
+## OscillatorNode Interface
+ - type: sine, square, sawtooth, triangle, custom
+ - start()
 
-### Oscillator
+## Example: Oscillator
  - setup AudioContext
- - add oscillator
+ - AudioContext.createOscillator()
  - frequency control
 
-### Envelope
+## Audio Parameters
+ - Affect aspects of an AudioNode's processing
+ - Value changes can be immediate
+ - Value changes can be automated
+ - a-rate parameter: value is sampled on a per-sample basis
+ - k-rate parameter: value is sample on a per-block basis
+
+## AudioParam Interface
+ - SetValueAtTime(float value, double startTime)
+ - linearRampToValueAtTime(float value, double endTime)
+ - exponentialRampToValueAtTime(float value, double endTime)
+ - setTargetAtTime(float target, double startTime, double timeConstant)
+ - setValueCurveAtTime(Float32Array values, double startTime, double duration)
+ - cancelScheduledValues(double startTime)
+
+## GainNode Interface
  - add gain node
  - initialize parameters on trigger event
 
@@ -51,6 +92,10 @@
 ### Filter Modulation
 
 ### Oscillator Modulation
+
+## FM
+http://www.taktech.org/takm/WebFMSynth/
+http://greweb.me/2013/08/FM-audio-api/
 
 ## A Note on Oscillators and Bandwidth
  - phase

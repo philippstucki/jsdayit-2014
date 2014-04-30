@@ -29,7 +29,7 @@ function startNote() {
 }
 
 function stopNote() {
-    var r = parseFloat($('#r').val());
+    var r = 0.3;
     var now = ctx.currentTime;
     env.gain.cancelScheduledValues(now);
     env.gain.setValueAtTime(env.gain.value, now);
@@ -82,7 +82,7 @@ function startNote() {
 }
 
 function stopNote() {
-    var r = parseFloat($('#r').val());
+    var r = 0.3;
     var now = ctx.currentTime;
     env.gain.cancelScheduledValues(now);
     env.gain.setValueAtTime(env.gain.value, now);

@@ -10,23 +10,44 @@
         <div class="top">
             <div class="wrapper">
                 
-<label for="f">OSC Frequency</label>
-<input type="range" id="f" value="70" class="slider" min="1" max="1000"></input>
-<button onclick="osc.disconnect()">Stop</button>
+<label>Modulator Frequency<input type="range" id="mf" value="500" min="1" max="2000" step="1"></input></label>
+<label>Modulator Gain<input type="range" id="mg" value="0" min="0" max="1000" step="5"></input></label>
+<label>Carrier Frequency<input type="range" id="cf" value="300" min="1" max="1000" step="1"></input></label>
+<label>Master Gain<input type="range" id="master" value="0.2" min="0" max="1" step="0.1"></input></label>
 
             </div>
         </div>
         <div class="bottom">
             <div class="wrapper">
                 <pre>
-var osc = ctx.createOscillator();
-osc.type = 'square';
-osc.frequency.value = 70;
-osc.connect(ctx.destination);
-osc.start(0);
+var master = ctx.createGain();
+master.gain.value = 0.2;
+master.connect(ctx.destination);
 
-$('#f').on('input', function() {
-    osc.frequency.value = $(this).val();
+var carrier = ctx.createOscillator();
+carrier.frequency.value = 300;
+carrier.connect(master);
+carrier.start(0);
+
+var modulator = ctx.createOscillator();
+var modulatorGain = ctx.createGain();
+modulator.frequency.value = 500;
+modulatorGain.gain.value = 0;
+modulator.connect(modulatorGain);
+modulatorGain.connect(carrier.frequency);
+modulator.start(0);
+
+$('#cf').on('input change', function() {
+    carrier.frequency.value = $(this).val();
+});
+$('#mf').on('input change', function() {
+    modulator.frequency.value = $(this).val();
+});
+$('#mg').on('input change', function() {
+    modulatorGain.gain.value = $(this).val();
+});
+$('#master').on('input change', function() {
+    master.gain.value = $(this).val();
 });
 
 </pre>
@@ -36,14 +57,34 @@ $('#f').on('input', function() {
         <script>
             var AudioContext = window.AudioContext || window.webkitAudioContext;
             var ctx = new AudioContext();
-var osc = ctx.createOscillator();
-osc.type = 'square';
-osc.frequency.value = 70;
-osc.connect(ctx.destination);
-osc.start(0);
+var master = ctx.createGain();
+master.gain.value = 0.2;
+master.connect(ctx.destination);
 
-$('#f').on('input', function() {
-    osc.frequency.value = $(this).val();
+var carrier = ctx.createOscillator();
+carrier.frequency.value = 300;
+carrier.connect(master);
+carrier.start(0);
+
+var modulator = ctx.createOscillator();
+var modulatorGain = ctx.createGain();
+modulator.frequency.value = 500;
+modulatorGain.gain.value = 0;
+modulator.connect(modulatorGain);
+modulatorGain.connect(carrier.frequency);
+modulator.start(0);
+
+$('#cf').on('input change', function() {
+    carrier.frequency.value = $(this).val();
+});
+$('#mf').on('input change', function() {
+    modulator.frequency.value = $(this).val();
+});
+$('#mg').on('input change', function() {
+    modulatorGain.gain.value = $(this).val();
+});
+$('#master').on('input change', function() {
+    master.gain.value = $(this).val();
 });
 
         </script>

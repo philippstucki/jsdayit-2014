@@ -36,3 +36,5 @@ gulp.task('watch-dotgraphs', ['dotgraphs'], function() {
 gulp.task('build', ['examples', 'dotgraphs'], function() {
 });
 
+gulp.task('watch', ['watch-examples', 'watch-dotgraphs'], function() {
+});

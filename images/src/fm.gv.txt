@@ -1,0 +1,14 @@
+digraph G {
+    node [fontname = "Arial,sans-serif"];
+
+    modulator[label="Modulator"];
+    modgain[label="Modulator Gain"];
+    modf[label="Modulator frequency", shape=box];
+    carrierf[label="Carrier frequency", shape=box];
+
+    modulator->modgain;
+    modgain->Carrier[style=dotted];
+    Carrier->destination;
+    modf->modulator[style=dotted];
+    carrierf->Carrier[style=dotted];
+}

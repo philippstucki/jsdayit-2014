@@ -1,0 +1,56 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Web Audio API - Example: Simple Square Oscillator</title>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="top">
+            <div class="wrapper">
+                
+<button onclick="jsProcessor.connect(ctx.destination)">Start</button>
+<button onclick="jsProcessor.disconnect()">Stop</button>
+
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="wrapper">
+                <pre>
+var jsProcessor = ctx.createScriptProcessor(4096, 0, 2);
+jsProcessor.onaudioprocess = function(e) {
+    var outData0 = e.outputBuffer.getChannelData(0),
+        outData1 = e.outputBuffer.getChannelData(1);
+
+    for (var i = 0; i < e.outputBuffer.length; i++) {
+        outData0[i] = (Math.random()*0.5 - 0.25);
+        outData1[i] = (Math.random()*0.5 - 0.25);
+    }
+};
+
+
+
+</pre>
+            </div>
+        </div>
+        <script src="lib/jquery-1.11.0.min.js"></script>
+        <script>
+            var AudioContext = window.AudioContext || window.webkitAudioContext;
+            var ctx = new AudioContext();
+var jsProcessor = ctx.createScriptProcessor(4096, 0, 2);
+jsProcessor.onaudioprocess = function(e) {
+    var outData0 = e.outputBuffer.getChannelData(0),
+        outData1 = e.outputBuffer.getChannelData(1);
+
+    for (var i = 0; i < e.outputBuffer.length; i++) {
+        outData0[i] = (Math.random()*0.5 - 0.25);
+        outData1[i] = (Math.random()*0.5 - 0.25);
+    }
+};
+
+
+
+        </script>
+    </body>
+</html>

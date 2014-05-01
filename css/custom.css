@@ -1,3 +1,15 @@
-.reveal h2 {
+.reveal h2,
+.reveal h3
+{
     text-transform: none;
+}
+
+.reveal section img {
+    border: 0;
+    background: none;
+    box-shadow: none;
+}
+
+.reveal pre code em {
+    text-decoration: underline;
 }

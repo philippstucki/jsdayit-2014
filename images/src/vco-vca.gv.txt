@@ -1,3 +1,4 @@
 digraph G {
     Oscillator->Gain->destination
+    {gain[shape=box]}->Gain[style=dotted]
 }

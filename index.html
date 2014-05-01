@@ -14,7 +14,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<link rel="stylesheet" href="css/reveal.min.css">
-		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
 		<link rel="stylesheet" href="css/custom.css">
 
 		<!-- For syntax highlighting -->
@@ -53,16 +53,20 @@
 				<section>
 					<h2>Who I Am</h2>
                     <ul>
-                        <li>Interestes: programming, synthsizers, math, electronics</li>
+                        <li>Interested in programming, synthsizers, math, electronics</li>
                         <li>What I do: consulting, design and implementation of web applications</li>
                     </ul>
+					<h3>Where I Work</h3>
+                    <a href="http://stuckistucki.com">
+                        <img width="50%" src="images/stuckistucki.png"></img>
+                    </a>
 				</section>
 
 				<section>
 					<h2>Who You Are</h2>
                     <ul>
                         <li>Anyone used the Web Audio API?</li>
-                        <li>Annyone into audio programming otherwise?</li>
+                        <li>Anyone into audio programming otherwise?</li>
                     </ul>
 				</section>
 
@@ -135,14 +139,17 @@
                     </ul>
 				</section>
 
+<!--
 				<section>
-                    <h2>OscillatorNode Interface</h2>
+                    <h2>?? OscillatorNode Interface</h2>
                     <ul>
                         <li class="fragment">Generates a periodic waveform</li>
                         <li class="fragment">Types: sine, square, sawtooth, triangle, custom</li>
                     </ul>
 				</section>
+-->
 
+<!--
 				<section>
                     <h2>Example: Oscillator</h2>
                     <ul>
@@ -150,8 +157,128 @@
                         <li class="fragment">Create OscillatorNode and set waveform type</li>
                         <li class="fragment">Connect the OscillatorNode to the context's destination</li>
                         <li class="fragment">Start the Oscillator</li>
-                        <li class="fragment"><a href="examples/ex-vco.html" target="_blank">Open Example</a></li>
                     </ul>
+                </section>
+-->
+
+				<section>
+                    <h2>Example: Oscillator</h2>
+                    <img width="30%" src="images/vco.gv.svg"/>
+                    <p><a href="examples/ex-vco.html" target="_blank">Open example</a></p>
+					<aside class="notes">
+                        Show example!!
+                    </aside>
+				</section>
+
+				<section>
+                    <h2>OscillatorNode Interface</h2>
+                    <pre>
+                        <code data-trim data-noescape class="no-highlight">
+interface OscillatorNode : AudioNode {
+
+    attribute OscillatorType type;
+
+    readonly attribute <em>AudioParam</em> frequency;
+    readonly attribute <em>AudioParam</em> detune;
+
+    void start(double when);
+
+    // (...)
+
+};
+                        </code>
+                    </pre>
+				</section>
+
+				<section>
+                    <h2>Audio Parameters</h2>
+                    <ul>
+                        <li class="fragment">Affect aspects of an AudioNode's processing</li>
+                        <li class="fragment">Value changes can be immediate</li>
+                        <li class="fragment">Value changes can be automated</li>
+                        <li class="fragment">a-rate parameter: value is sampled on a per-sample basis</li>
+                        <li class="fragment">k-rate parameter: value is sample on a per-block basis</li>
+                    </ul>
+                    <aside class="notes">
+                        block length = 128 samples ~ 3ms @ 44.1kHz
+                    </aside>
+				</section>
+
+				<section>
+                    <h2>AudioParam Interface</h2>
+                    <pre class="fragment">
+                        <code data-trim data-noescape class="no-highlight">
+interface AudioParam {
+
+    attribute float value;
+    readonly attribute float defaultValue;
+
+    void setValueAtTime(float value, double startTime);
+    void linearRampToValueAtTime(float value, double endTime);
+    void exponentialRampToValueAtTime(float value, double endTime);
+
+    // (...)
+
+    void cancelScheduledValues(double startTime);
+
+};
+                        </code>
+                    </pre>
+				</section>
+
+				<section>
+                    <h2>GainNode Interface</h2>
+                    <pre>
+                        <code data-trim data-noescape class="no-highlight">
+interface GainNode : AudioNode {
+
+    readonly attribute AudioParam gain;
+
+};
+                        </code>
+                    </pre>
+				</section>
+
+				<section>
+                    <h2>Example: Oscillator With Envelope</h2>
+                    <img width="40%" src="images/vco-vca.gv.svg"/>
+                    <p><a href="examples/ex-vco-vca.html" target="_blank">Open example</a></p>
+					<aside class="notes">
+                        Show example!!
+                    </aside>
+				</section>
+
+				<section>
+                    <h2>Example: Oscillator, Envelope, Filter</h2>
+                    <img width="40%" src="images/vco-vca-vcf.gv.svg"/>
+                    <p><a href="examples/ex-vco-vca-vcf.html" target="_blank">Open example</a></p>
+					<aside class="notes">
+                        Show example!!
+                    </aside>
+				</section>
+
+				<section>
+                    <h2>BiquadFilterNode Interface</h2>
+                    <pre>
+                        <code data-trim data-noescape class="no-highlight">
+interface BiquadFilterNode : AudioNode {
+
+    attribute BiquadFilterType type;
+    readonly attribute AudioParam frequency;
+    readonly attribute AudioParam detune;
+    readonly attribute AudioParam Q;
+    readonly attribute AudioParam gain;
+
+    void getFrequencyResponse(...);
+
+};
+                        </code>
+                    </pre>
+				</section>
+
+				<section>
+                    <h2>Filter: Frequency Response</h2>
+                    <a target="_blank" href="http://orm-other.s3.amazonaws.com/webaudioapi/samples/frequency-response/index.html"><img src="images/filter_frequencyresponse.png"></a>
 				</section>
 
 				<section>
@@ -193,6 +320,7 @@
 				progress: true,
 				history: true,
 				center: true,
+                slideNumber: true,
 
 				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none

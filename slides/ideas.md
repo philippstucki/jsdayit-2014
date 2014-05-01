@@ -82,23 +82,34 @@
  - add gain node
  - initialize parameters on trigger event
 
-### Filter
- - add filter node
+----------------------
 
-### LFO
- - add oscillator node
- - connect oscillator
+## Important Terms
+- Nyquist Frequency
+- Phase
+- dB
 
-### Filter Modulation
+## Sample Player
+- Sample Loading
+- Typed Arrays and Buffers
+- Loops
 
-### Oscillator Modulation
+## Convolver Node
+- Convolution
+- Impulse Response
+
+## ScriptProcessor
+
+## Delay
+
+
+
 
 ## FM
 http://www.taktech.org/takm/WebFMSynth/
 http://greweb.me/2013/08/FM-audio-api/
 
 ## A Note on Oscillators and Bandwidth
- - phase
  - simple apporach to a pwm oscillator
  - inverse fft
  - wave tables
@@ -110,3 +121,6 @@ http://greweb.me/2013/08/FM-audio-api/
 - setTimeout, requestAnimationFrame vs. real time clock
 - Scheduling audio events
 
+## Links
+- [https://github.com/WebKit/webkit/tree/master/Source/WebCore/Modules/webaudio](Webkit Web Audio API Implementation)
+- [http://mathworld.wolfram.com/FourierSeriesSquareWave.html]

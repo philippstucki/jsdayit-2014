@@ -102,7 +102,20 @@
 
 ## Delay
 
+## DynamicsProcessor
 
+## Waveshaper
+
+## 3D Spatialization
+
+## Channels: Mono, Stereo, 5.1
+
+## AnalyserNode
+
+## Where to go from here?
+- Live input
+- WebRTC
+- Web MIDI API
 
 
 ## FM
@@ -123,4 +136,5 @@ http://greweb.me/2013/08/FM-audio-api/
 
 ## Links
 - [https://github.com/WebKit/webkit/tree/master/Source/WebCore/Modules/webaudio](Webkit Web Audio API Implementation)
-- [http://mathworld.wolfram.com/FourierSeriesSquareWave.html]
+- [http:sampler//mathworld.wolfram.com/FourierSeriesSquareWave.html]
+- Spec

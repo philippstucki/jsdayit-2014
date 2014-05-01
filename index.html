@@ -44,7 +44,7 @@
 			<div class="slides">
 				<section>
 					<h1>Web Audio API</h1>
-					<h3>The Modular Synth And Sound Processor at Your Fingertips</h3>
+					<p>The Modular Synth And Sound Processor at Your Fingertips</p>
 					<p>
 						<small><a href="http://stuckistucki.com">Philipp Stucki</a> / <a href="http://twitter.com/_phst">@_phst</a></small>
 					</p>
@@ -67,33 +67,34 @@
                     <ul>
                         <li>Anyone used the Web Audio API?</li>
                         <li>Anyone into audio programming otherwise?</li>
+                        <li>Game Programming?</li>
+                        <li>Graphics Programming?</li>
                     </ul>
 				</section>
 
-				<section>
-					<h2>What The Intention Is</h2>
-					<p>
-                        asdfasdf
-					</p>
-				</section>
+				<!--<section>-->
+					<!--<h2>What The Intention Is</h2>-->
+					<!--<p>-->
+                        <!--asdfasdf-->
+					<!--</p>-->
+				<!--</section>-->
 
 				<section>
 					<h2>Web Audio API Overview</h2>
                     <ul>
-                        <li class="fragment">Modular Routing</li>
+                        <li class="fragment">Very high level</li>
+                        <li class="fragment">Natively implemented</li>
+                        <li class="fragment">Runs in its own thread</li>
+                        <li class="fragment">Modular routing</li>
                         <li class="fragment">Sample-accurate scheduled playback</li>
                         <li class="fragment">Low latency</li>
                         <li class="fragment">Parameter automation</li>
-                        <li class="fragment">Process audio from audio or video elements</li>
-                        <li class="fragment">Process live audio acquired using getUserMedia()</li>
-                        <li class="fragment">Oscillators</li>
-                        <li class="fragment">Biquad filter</li>
-                        <li class="fragment">Convolution engine for reverb effects</li>
+                        <li class="fragment">Process live audio</li>
+                        <li class="fragment">Generators: oscillator, sample player, live audio</li>
+                        <li class="fragment">Processors: filter, convolver, wave shaper, compressor</li>
                         <li class="fragment">Audio processing in JavaScript</li>
-                        <li class="fragment">Dynamics processor</li>
                         <li class="fragment">Spatialized audio for 3D effects</li>
-                        <li class="fragment">Time-domain and frequency-domain analysis</li>
-                        <li class="fragment">WebRTC integration: sending and receiving audio data</li>
+                        <li class="fragment">Audio analysis</li>
                     </ul>
 				</section>
 
@@ -107,6 +108,7 @@
                         <li>iOS Safari: Yes</li>
                         <li>Android Chrome: Yes</li>
                         <li>Firefox Chrome: Yes</li>
+                        <li class="fragment">Internet Explorer: Sorry</li>
                     </ul>
 				</section>
 
@@ -125,8 +127,8 @@
                     <ul>
                         <li class="fragment">Building block of an AudioContext</li>
                         <li class="fragment">Parent class for all input/output and processing nodes</li>
-                        <li class="fragment">Multiple nodes can be connected as inputs</li>
                         <li class="fragment">Output can be connected to multiple nodes (fan-out)</li>
+                        <li class="fragment">Multiple nodes can be connected as inputs</li>
                     </ul>
 				</section>
 
@@ -269,7 +271,9 @@ interface BiquadFilterNode : AudioNode {
     readonly attribute AudioParam Q;
     readonly attribute AudioParam gain;
 
-    void getFrequencyResponse(...);
+    void getFrequencyResponse(Float32Array frequencyHz,
+                              Float32Array magResponse,
+                              Float32Array phaseResponse);
 
 };
                         </code>
@@ -278,11 +282,160 @@ interface BiquadFilterNode : AudioNode {
 
 				<section>
                     <h2>Filter: Frequency Response</h2>
-                    <a target="_blank" href="http://orm-other.s3.amazonaws.com/webaudioapi/samples/frequency-response/index.html"><img src="images/filter_frequencyresponse.png"></a>
+                    <a target="_blank" href="http://orm-other.s3.amazonaws.com/webaudioapi/samples/frequency-response/index.html">
+                        <img src="images/filter_frequencyresponse.png">
+                    </a>
 				</section>
 
 				<section>
+                    <h2>Aside: JavaScript Typed Arrays</h2>
+                    <p>Used in many APIs: WebGL, Web Audio API, Canvas, etc.</p>
+				</section>
+
+				<section>
+                    <h2>ArrayBuffer</h2>
+                    <p>Generic chunk of data, provides no direct access</p>
+				</section>
+
+				<section>
+                    <h2>ArrayBufferView</h2>
+                    <p>Interfaces providing context on a ArrayBuffer:</p>
+                    <ul>
+                        <li>type</li>
+                        <li>offset</li>
+                        <li>number of elements</li>
+                    </ul>
+				</section>
+
+				<section>
+                    <h2>Example Types</h2>
+                    <p>Typed arrays are implementations of ArrayBufferView</p>
+                    <ul>
+                        <li>Float32Array</li>
+                        <li>Int32Array, Int16Array, Int8Array</li>
+                        <li>Uint32Array, etc.</li>
+                    </ul>
+				</section>
+
+				<section>
+                    <h2>Float32Array in Action</h2>
+                    <pre>
+                        <code data-trim data-noescape>
+> a = new Float32Array(4);
+  [0, 0, 0, 0]
+
+> a[0] = Math.PI;
+> a;
+  [3.1415927410125732, 0, 0, 0]
+
+> a.length;
+  4
+
+> a.buffer;
+  ArrayBuffer {}
+
+> a.buffer.byteLength;
+  16
+                        </code>
+                    </pre>
+				</section>
+
+				<section>
+                    <h2>Loading Audio Data</h2>
+                    <pre>
+                        <code data-trim data-noescape>
+function loadBuffer(url, dest) {
+    var r = new XMLHttpRequest();
+
+    r.open('GET', url);
+    r.responseType = 'arraybuffer';
+
+    r.onload = function() {
+        ctx.decodeAudioData(r.response, function(buffer) {
+            dest.buffer = buffer;
+        });
+    };
+
+    r.send();
+}
+                        </code>
+                    </pre>
+				</section>
+
+				<section>
+                    <h2>AudioBufferSourceNode Interface</h2>
+                    <pre>
+                        <code data-trim data-noescape class="no-highlight">
+Interface AudioBufferSourceNode : AudioNode {
+
+    attribute AudioBuffer? buffer;
+
+    readonly attribute AudioParam playbackRate;
+
+    attribute boolean loop;
+    attribute double loopStart;
+    attribute double loopEnd;
+
+    void start(optional double when = 0, optional double offset = 0, optional double duration);
+    void stop(optional double when = 0);
+
+    attribute EventHandler onended;
+
+};
+                        </code>
+                    </pre>
+				</section>
+
+				<section>
+                    <h2>Example: Sample Player</h2>
+                    <img width="40%" src="images/sampler.gv.svg"/>
+                    <p><a href="examples/ex-sampler.html" target="_blank">Open example</a></p>
+					<aside class="notes">
+                        Show example!!
+                    </aside>
+				</section>
+
+				<section>
+                    <h2>ConvolverNode Interface</h2>
+                    <pre>
+                        <code data-trim data-noescape class="no-highlight">
+interface ConvolverNode : AudioNode {
+
+    attribute AudioBuffer? buffer;
+    attribute boolean normalize;
+
+};
+                        </code>
+                    </pre>
+				</section>
+
+				<section>
+                    <h2>Convolution?</h2>
+                    <h2>Impulse Response?</h2>
+				</section>
+
+				<section>
+                    <h2>Example: Convolution</h2>
+                    <img width="40%" src="images/convolution.gv.svg"/>
+                    <p><a href="examples/ex-convolution.html" target="_blank">Open example</a></p>
+					<aside class="notes">
+                        Show example!!
+                    </aside>
+				</section>
+
+
+
+
+
+
+
+				<section>
                     <h2></h2>
+                    <ul>
+                        <li></li>
+                        <li class="fragment"></li>
+                    </ul>
+                    <p></p>
 				</section>
 
 				<section>

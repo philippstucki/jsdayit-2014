@@ -6,12 +6,14 @@ var drumloop={};
 
 function startLoop() {
     if (drumloop.source) drumloop.source.stop(0);
+
     drumloop.source = ctx.createBufferSource();
     drumloop.source.buffer = drumloop.buffer;
     drumloop.source.loop = $('#loop').prop('checked');
     drumloop.source.connect(ctx.destination);
     setLoopParams();
-    drumloop.source.start(0);
+
+    drumloop.source.start(0, drumloop.source.loopStart);
 }
 
 function stopLoop() {
@@ -52,7 +54,7 @@ function loadBuffer(url, dest) {
 <label>Loop<input type="checkbox" id="loop"></input></label>
 <label>Loop start<input type="range" id="loopstart" value="0" min="0" max="1" step="0.01"></input></label>
 <label>Loop end<input type="range" id="loopend" value="1" min="0" max="1" step="0.01"></input></label>
-<label>Playback Rate<input type="range" id="rate" value="1" min="0.1" max="2" step="0.1"></input></label>
+<label>Playback Rate<input type="range" id="rate" value="1" min="0.5" max="1.5" step="0.1"></input></label>
 {% endblock %}
 
 {% block content_bottom %}

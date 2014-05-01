@@ -14,7 +14,7 @@
 <button id="stop">Stop</button>
 <label>Wet gain<input type="range" id="wetgain" value="0" min="0" max="1" step="0.1"></input></label>
 <label>Dry gain<input type="range" id="drygain" value="1" min="0" max="1" step="0.1"></input></label>
-<audio controls src="audiofiles/room.mp3"></audio>
+<audio controls src="audiofiles/hall.mp3"></audio>
 
             </div>
         </div>
@@ -27,7 +27,7 @@ loadBuffer('audiofiles/amenbreak.mp3', function (buffer) {
     drumloop.buffer = buffer;
 });
 
-loadBuffer('audiofiles/room.mp3', function (buffer) {
+loadBuffer('audiofiles/hall.mp3', function (buffer) {
     convolver.buffer = buffer;
 });
 
@@ -91,7 +91,7 @@ loadBuffer('audiofiles/amenbreak.mp3', function (buffer) {
     drumloop.buffer = buffer;
 });
 
-loadBuffer('audiofiles/room.mp3', function (buffer) {
+loadBuffer('audiofiles/hall.mp3', function (buffer) {
     convolver.buffer = buffer;
 });
 

@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Web Audio API - Example: Simple Square Oscillator</title>
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/highlight/default.css">
     </head>
     <body>
         <div class="top">
@@ -17,7 +18,7 @@
         </div>
         <div class="bottom">
             <div class="wrapper">
-                <pre>
+                <pre><code>
 var jsProcessor = ctx.createScriptProcessor(4096, 0, 2);
 jsProcessor.onaudioprocess = function(e) {
     var outData0 = e.outputBuffer.getChannelData(0),
@@ -31,13 +32,17 @@ jsProcessor.onaudioprocess = function(e) {
 
 
 
-</pre>
+</code></pre>
             </div>
         </div>
         <script src="lib/jquery-1.11.0.min.js"></script>
+        <script src="lib/highlight.pack.js"></script>
         <script>
             var AudioContext = window.AudioContext || window.webkitAudioContext;
             var ctx = new AudioContext();
+            $(document).ready( function() {
+                hljs.initHighlightingOnLoad();
+            });
 var jsProcessor = ctx.createScriptProcessor(4096, 0, 2);
 jsProcessor.onaudioprocess = function(e) {
     var outData0 = e.outputBuffer.getChannelData(0),

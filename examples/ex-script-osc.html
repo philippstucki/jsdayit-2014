@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Web Audio API - Example: Simple Square Oscillator</title>
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/highlight/default.css">
     </head>
     <body>
         <div class="top">
@@ -19,7 +20,7 @@
         </div>
         <div class="bottom">
             <div class="wrapper">
-                <pre>
+                <pre><code>
 // (…)<span class="hidden">
 var gain = ctx.createGain();
 gain.gain.value = 0.5;
@@ -56,13 +57,17 @@ $('#gain').on('input change', function() {
 // </span>
 
 
-</pre>
+</code></pre>
             </div>
         </div>
         <script src="lib/jquery-1.11.0.min.js"></script>
+        <script src="lib/highlight.pack.js"></script>
         <script>
             var AudioContext = window.AudioContext || window.webkitAudioContext;
             var ctx = new AudioContext();
+            $(document).ready( function() {
+                hljs.initHighlightingOnLoad();
+            });
 // (…)<span class="hidden">
 var gain = ctx.createGain();
 gain.gain.value = 0.5;

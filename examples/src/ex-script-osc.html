@@ -1,0 +1,51 @@
+{%- set title = "Simple Square Oscillator" -%}
+{% extends "examples/src/layout.html" %}
+
+{%- macro examplescript() -%}
+// hidecode
+var gain = ctx.createGain();
+gain.gain.value = 0.5;
+gain.connect(ctx.destination);
+// endhidecode
+
+var jsProcessor = ctx.createScriptProcessor(4096, 0, 1);
+jsProcessor.onaudioprocess = function(e) {
+    var output = e.outputBuffer.getChannelData(0);
+    var f, T, n;
+
+    f = $('#f').val();
+    T = 1/f*ctx.sampleRate;
+
+    for (var i = 0; i < e.outputBuffer.length; i++) {
+        n = Math.floor(ctx.currentTime*ctx.sampleRate)+i;
+
+        if (n%T < T/2) {
+            output[i] = 1;
+        } else {
+            output[i] = -1;
+        }
+    }
+};
+
+// hidecode
+$('#f').on('input change', function() {
+    $('#cf').text($(this).val());
+});
+
+$('#gain').on('input change', function() {
+    gain.gain.value = $(this).val();
+});
+// endhidecode
+
+{% endmacro %}
+
+{% block content_top %}
+<button onclick="jsProcessor.connect(gain)">Start</button>
+<button onclick="jsProcessor.disconnect()">Stop</button>
+<label>frequency<input type="range" id="f" value="50" class="slider" min="1" max="8000" step="1"></input></label>
+<label>gain<input type="range" id="gain" value="0.5" class="slider" min="0" max="1" step="0.1"></input></label>
+{% endblock %}
+
+{% block content_bottom %}
+{{ examplescript() }}
+{% endblock %}

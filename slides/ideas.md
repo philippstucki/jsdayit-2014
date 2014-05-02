@@ -113,9 +113,15 @@
 ## AnalyserNode
 
 ## Where to go from here?
+- Check out the example collection
+- Build your own applications
 - Live input
 - WebRTC
 - Web MIDI API
+
+## Things to be improved
+- Audio interface selection
+- Audio hardware configuration
 
 
 ## FM

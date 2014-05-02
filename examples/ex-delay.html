@@ -1,0 +1,151 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Web Audio API - Example: Convolution</title>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="top">
+            <div class="wrapper">
+                
+<button id="start">Start</button>
+<button id="stop">Stop</button>
+<label>Wet gain<input type="range" id="wetgain" value="0" min="0" max="1" step="0.1"></input></label>
+<label>Dry gain<input type="range" id="drygain" value="1" min="0" max="1" step="0.1"></input></label>
+<label>Delay time<input type="range" id="delay" value="0.2" min="0" max="1" step="0.01"></input></label>
+
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="wrapper">
+                <pre>
+var drumloop = {};
+
+loadBuffer('audiofiles/amenbreak.mp3', function (buffer) {
+    drumloop.buffer = buffer;
+});
+
+
+var delay = ctx.createDelay();
+delay.delayTime.value = 0.23;
+var wetgain = ctx.createGain();
+var drygain = ctx.createGain();
+wetgain.gain.value = 0;
+drygain.gain.value = 1;
+delay.connect(wetgain);
+wetgain.connect(ctx.destination);
+drygain.connect(ctx.destination);
+
+$('#delay').on('input change', function () {
+    delay.delayTime.value = $(this).val();
+});
+
+// (…)<span class="hidden">
+$('#wetgain').on('input change', function () {
+    wetgain.gain.value = $(this).val();
+});
+
+$('#drygain').on('input change', function () {
+    drygain.gain.value = $(this).val();
+});
+
+$('#start').on('click', startLoop);
+$('#stop').on('click', stopLoop);
+
+function startLoop() {
+    if (drumloop.source) drumloop.source.stop(0);
+    drumloop.source = ctx.createBufferSource();
+    drumloop.source.buffer = drumloop.buffer;
+    drumloop.source.loop = true;
+    drumloop.source.connect(delay);
+    drumloop.source.connect(drygain);
+    drumloop.source.start(0);
+}
+
+function stopLoop() {
+    drumloop.source.stop(0);
+}
+function loadBuffer(url, cb) {
+    var r = new XMLHttpRequest();
+    r.open('GET', url, true);
+    r.responseType = 'arraybuffer';
+    r.onload = function() {
+        ctx.decodeAudioData(r.response, function(buffer) {
+            cb.call(this, buffer);
+        });
+    };
+    r.send();
+}
+// </span>
+
+</pre>
+            </div>
+        </div>
+        <script src="lib/jquery-1.11.0.min.js"></script>
+        <script>
+            var AudioContext = window.AudioContext || window.webkitAudioContext;
+            var ctx = new AudioContext();
+var drumloop = {};
+
+loadBuffer('audiofiles/amenbreak.mp3', function (buffer) {
+    drumloop.buffer = buffer;
+});
+
+
+var delay = ctx.createDelay();
+delay.delayTime.value = 0.23;
+var wetgain = ctx.createGain();
+var drygain = ctx.createGain();
+wetgain.gain.value = 0;
+drygain.gain.value = 1;
+delay.connect(wetgain);
+wetgain.connect(ctx.destination);
+drygain.connect(ctx.destination);
+
+$('#delay').on('input change', function () {
+    delay.delayTime.value = $(this).val();
+});
+
+// (…)<span class="hidden">
+$('#wetgain').on('input change', function () {
+    wetgain.gain.value = $(this).val();
+});
+
+$('#drygain').on('input change', function () {
+    drygain.gain.value = $(this).val();
+});
+
+$('#start').on('click', startLoop);
+$('#stop').on('click', stopLoop);
+
+function startLoop() {
+    if (drumloop.source) drumloop.source.stop(0);
+    drumloop.source = ctx.createBufferSource();
+    drumloop.source.buffer = drumloop.buffer;
+    drumloop.source.loop = true;
+    drumloop.source.connect(delay);
+    drumloop.source.connect(drygain);
+    drumloop.source.start(0);
+}
+
+function stopLoop() {
+    drumloop.source.stop(0);
+}
+function loadBuffer(url, cb) {
+    var r = new XMLHttpRequest();
+    r.open('GET', url, true);
+    r.responseType = 'arraybuffer';
+    r.onload = function() {
+        ctx.decodeAudioData(r.response, function(buffer) {
+            cb.call(this, buffer);
+        });
+    };
+    r.send();
+}
+// </span>
+
+        </script>
+    </body>
+</html>

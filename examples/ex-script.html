@@ -24,8 +24,8 @@ jsProcessor.onaudioprocess = function(e) {
         outData1 = e.outputBuffer.getChannelData(1);
 
     for (var i = 0; i < e.outputBuffer.length; i++) {
-        outData0[i] = (Math.random()*0.5 - 0.25);
-        outData1[i] = (Math.random()*0.5 - 0.25);
+        outData0[i] = Math.random()/2 - 1/4;
+        outData1[i] = Math.random()/2 - 1/4;
     }
 };
 
@@ -44,8 +44,8 @@ jsProcessor.onaudioprocess = function(e) {
         outData1 = e.outputBuffer.getChannelData(1);
 
     for (var i = 0; i < e.outputBuffer.length; i++) {
-        outData0[i] = (Math.random()*0.5 - 0.25);
-        outData1[i] = (Math.random()*0.5 - 0.25);
+        outData0[i] = Math.random()/2 - 1/4;
+        outData1[i] = Math.random()/2 - 1/4;
     }
 };
 

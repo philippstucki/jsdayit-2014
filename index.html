@@ -45,39 +45,37 @@
 				<section>
 					<h1>Web Audio API</h1>
 					<p>The Modular Synth And Sound Processor at Your Fingertips</p>
-					<p>
-						<small><a href="http://stuckistucki.com">Philipp Stucki</a> / <a href="http://twitter.com/_phst">@_phst</a></small>
-					</p>
+                    <aside class="notes">
+                        Advise on youtube: start presentation with question or shocking news.<br/>
+                        No questions, only answers.<br/>
+                        shocking news:
+                    </aside>
 				</section>
 
 				<section>
-					<h2>Who I Am</h2>
-                    <ul>
-                        <li>Interested in programming, synthsizers, math, electronics</li>
-                        <li>What I do: consulting, design and implementation of web applications</li>
-                    </ul>
-					<h3>Where I Work</h3>
+					<h2>I'm not a qualified dsp engineer</h2>
+				</section>
+
+				<section>
+					<h2>It doesn't work on IE</h2>
+				</section>
+
+				<section>
+					<h2>Philipp Stucki</h2>
+					<p>
+						<small><a href="http://stuckistucki.com">Philipp Stucki</a> / <a href="http://twitter.com/_phst">@_phst</a></small>
+					</p>
                     <a href="http://stuckistucki.com">
                         <img width="50%" src="images/stuckistucki.png"></img>
                     </a>
 				</section>
 
 				<section>
-					<h2>Who You Are</h2>
-                    <ul>
-                        <li>Anyone used the Web Audio API?</li>
-                        <li>Anyone into audio programming otherwise?</li>
-                        <li>Game Programming?</li>
-                        <li>Graphics Programming?</li>
-                    </ul>
-				</section>
-
-				<section>
 					<h2>Web Audio API Overview</h2>
                     <ul>
                         <li class="fragment">Very high level</li>
-                        <li class="fragment">Natively implemented</li>
-                        <li class="fragment">Runs in its own thread</li>
+                        <li class="fragment">Implemented in C++</li>
+                        <li class="fragment">Runs in its own high priority thread</li>
                         <li class="fragment">Modular routing</li>
                         <li class="fragment">Sample-accurate scheduled playback</li>
                         <li class="fragment">Low latency</li>
@@ -87,7 +85,7 @@
                         <li class="fragment">Processors: filter, convolver, wave shaper, compressor</li>
                         <li class="fragment">Audio processing in JavaScript</li>
                         <li class="fragment">Spatialized audio for 3D effects</li>
-                        <li class="fragment">Audio analysis</li>
+                        <li class="fragment">Real time audio analysis</li>
                     </ul>
 				</section>
 
@@ -106,23 +104,71 @@
 				</section>
 
 				<section>
-                    <h2>AudioContext Interface</h2>
+                    <h2>AudioContext</h2>
                     <ul>
                         <li class="fragment">Creates all AudioNodes</li>
                         <li class="fragment">Contains the routing graph</li>
                         <li class="fragment">AudioDestinationNode is the final node</li>
-                        <li class="fragment">Usually only a single AudiContext is used</li>
+                        <li class="fragment">Usually only a single AudioContext is used</li>
+                    </ul>
+				</section>
+
+				<section>
+                    <h2>AudioContext Interface</h2>
+                    <pre>
+                        <code data-trim data-noescape class="no-highlight">
+interface AudioContext : EventTarget {
+
+    readonly attribute AudioDestinationNode destination;
+    readonly attribute float sampleRate;
+    readonly attribute double currentTime;
+
+    // (...)
+
+    AnalyserNode createAnalyser();
+    GainNode createGain();
+    DelayNode createDelay(optional double maxDelayTime = 1.0);
+    BiquadFilterNode createBiquadFilter();
+    WaveShaperNode createWaveShaper();
+    PannerNode createPanner();
+    ConvolverNode createConvolver();
+
+    // (...)
+
+};
+                        </code>
+                    </pre>
+				</section>
+
+				<section>
+                    <h2>AudioNode</h2>
+                    <ul>
+                        <li class="fragment">Building block of an AudioContext</li>
+                        <li class="fragment">Implemented by all input/output and processing nodes</li>
+                        <li class="fragment">Output can be connected to multiple nodes (fan-out)</li>
+                        <li class="fragment">Multiple nodes can be connected as inputs</li>
                     </ul>
 				</section>
 
 				<section>
                     <h2>AudioNode Interface</h2>
-                    <ul>
-                        <li class="fragment">Building block of an AudioContext</li>
-                        <li class="fragment">Parent class for all input/output and processing nodes</li>
-                        <li class="fragment">Output can be connected to multiple nodes (fan-out)</li>
-                        <li class="fragment">Multiple nodes can be connected as inputs</li>
-                    </ul>
+                    <pre>
+                        <code data-trim data-noescape class="no-highlight">
+interface AudioNode : EventTarget {
+
+    void connect(AudioNode destination, /* ... */);
+    void connect(AudioParam destination, /* ... */);
+    void disconnect(optional unsigned long output = 0);
+
+    readonly attribute AudioContext context;
+    readonly attribute unsigned long numberOfInputs;
+    readonly attribute unsigned long numberOfOutputs;
+
+    // (...)
+
+};
+                        </code>
+                    </pre>
 				</section>
 
 				<section>
@@ -138,9 +184,10 @@
                     <h2>Example: Oscillator</h2>
                     <img width="30%" src="images/vco.gv.svg"/>
                     <p><a href="examples/ex-vco.html" target="_blank">Open example</a></p>
-					<aside class="notes">
-                        Show example!!
-                    </aside>
+                    <aside class="notes"><pre>
+- Explain routing graph
+- Show Example
+                    </pre></aside>
 				</section>
 
 				<section>
@@ -155,6 +202,7 @@ interface OscillatorNode : AudioNode {
     readonly attribute <em>AudioParam</em> detune;
 
     void start(double when);
+    void stop(double when);
 
     // (...)
 
@@ -170,7 +218,7 @@ interface OscillatorNode : AudioNode {
                         <li class="fragment">Value changes can be immediate</li>
                         <li class="fragment">Value changes can be automated</li>
                         <li class="fragment">a-rate parameter: value is sampled on a per-sample basis</li>
-                        <li class="fragment">k-rate parameter: value is sample on a per-block basis</li>
+                        <li class="fragment">k-rate parameter: value is sampled on a per-block basis</li>
                     </ul>
                     <aside class="notes">
                         block length = 128 samples ~ 3ms @ 44.1kHz
@@ -179,7 +227,7 @@ interface OscillatorNode : AudioNode {
 
 				<section>
                     <h2>AudioParam Interface</h2>
-                    <pre class="fragment">
+                    <pre>
                         <code data-trim data-noescape class="no-highlight">
 interface AudioParam {
 
@@ -188,7 +236,6 @@ interface AudioParam {
 
     void setValueAtTime(float value, double startTime);
     void linearRampToValueAtTime(float value, double endTime);
-    void exponentialRampToValueAtTime(float value, double endTime);
 
     // (...)
 
@@ -197,6 +244,12 @@ interface AudioParam {
 };
                         </code>
                     </pre>
+                    <aside class="notes"><pre>
+- direct value change
+- set value at given time, remains constant
+- set value using continous function
+- cancel schedule values
+                    </pre></aside>
 				</section>
 
 				<section>
@@ -210,21 +263,26 @@ interface GainNode : AudioNode {
 };
                         </code>
                     </pre>
+                    <aside class="notes"><pre>
+- interesting property: negative gain
+                    </pre></aside>
 				</section>
 
 				<section>
                     <h2>Example: Oscillator With Envelope</h2>
                     <img width="40%" src="images/vco-vca.gv.svg"/>
                     <p><a href="examples/ex-vco-vca.html" target="_blank">Open example</a></p>
-					<aside class="notes">
-                        Show example!!
-                    </aside>
 				</section>
 
 				<section>
                     <h2>BiquadFilterNode Interface</h2>
                     <pre>
                         <code data-trim data-noescape class="no-highlight">
+enum BiquadFilterType {
+    "lowpass", "highpass", "bandpass", "lowshelf",
+    "highshelf", "peaking", "notch", "allpass"
+};
+
 interface BiquadFilterNode : AudioNode {
 
     attribute BiquadFilterType type;
@@ -240,15 +298,16 @@ interface BiquadFilterNode : AudioNode {
 };
                         </code>
                     </pre>
+                    <aside class="notes"><pre>
+- shortly explain filter types
+- note how all of the parameters are AudioParams
+                    </pre></aside>
 				</section>
 
 				<section>
                     <h2>Example: Oscillator, Envelope, Filter</h2>
                     <img width="40%" src="images/vco-vca-vcf.gv.svg"/>
                     <p><a href="examples/ex-vco-vca-vcf.html" target="_blank">Open example</a></p>
-					<aside class="notes">
-                        Show example!!
-                    </aside>
 				</section>
 
 				<section>
@@ -259,7 +318,11 @@ interface BiquadFilterNode : AudioNode {
 				</section>
 
 				<section>
-                    <h2>Aside: JavaScript Typed Arrays</h2>
+                    <h1>Side Note</h1>
+				</section>
+
+				<section>
+                    <h2>JavaScript Typed Arrays</h2>
                     <p>Used in many APIs: WebGL, Web Audio API, Canvas, etc.</p>
 				</section>
 
@@ -386,6 +449,10 @@ Interface AudioBufferSourceNode : AudioNode {
                     </aside>
 				</section>
 
+				<section data-background="#fff">
+                    <img src="images/gulp.png"/>
+				</section>
+
 				<section>
                     <h2>ConvolverNode Interface</h2>
                     <pre>
@@ -433,14 +500,20 @@ interface ConvolverNode : AudioNode {
 				</section>
 
 				<section>
-                    <h2>Creating a ScriptProcessorNode</h2>
+                    <h2>ScriptProcessorNode</h2>
                     <pre>
                         <code data-trim data-noescape class="no-highlight">
-ScriptProcessorNode createScriptProcessor(
-    optional unsigned long bufferSize = 0,
-    optional unsigned long numberOfInputChannels = 2,
-    optional unsigned long numberOfOutputChannels = 2
-);
+interface AudioContext : EventTarget {
+    // (...)
+
+    ScriptProcessorNode createScriptProcessor(
+        optional unsigned long bufferSize = 0,
+        optional unsigned long numberOfInputChannels = 2,
+        optional unsigned long numberOfOutputChannels = 2
+    );
+
+    // (...)
+}
                         </code>
                     </pre>
 				</section>
@@ -500,23 +573,21 @@ interface AudioBuffer {
 				</section>
 
 				<section>
-                    <h2>Example: Polyphonic Synth With Sequencer</h2>
-                    <h2 class="fragment">... and Graphics!</h2>
+                    <h2>Example: Polyphonic Synth With Sequencer...</h2>
+                    <h2 class="fragment">and Graphics ...</h2>
+                    <h2 class="fragment">in 1K!</h2>
                     <p class="fragment"><a href="examples/js1k14/index.html" target="_blank">Open example</a></p>
 				</section>
 
 				<section>
-                    <h2>Square Wave Oscillator</h2>
-                    <pre>
-                        <code data-trim>
-function osc_square(omega) {
-    return omega > PI ? 1 : -1;
-}
-                        </code>
-                    </pre>
-                    <ul>
-                        <li class="fragment"></li>
-                    </ul>
+                    <h2>A Square Wave</h2>
+                    <img width="80%" src="images/squarewave-ideal.png"/>
+				</section>
+
+				<section>
+                    <h2>Example: Square Oscillator in One Line</h2>
+                    <p><a href="examples/ex-script-osc.html" target="_blank">Open example</a></p>
+                    <p class="fragment"><a href="examples/ex-vco.html" target="_blank">Open oscillator example</a></p>
 				</section>
 
 				<section>
@@ -536,8 +607,8 @@ function osc_square(omega) {
 				<section>
                     <h2>Oscillators in the Web Audio API</h2>
                     <ul>
-                        <li class="fragment">Are based on IFFT</li>
-                        <li class="fragment">Are bandlimited (have limited harmonics)</li>
+                        <li class="fragment">Based on IFFT</li>
+                        <li class="fragment">Bandlimited (have limited harmonics)</li>
                         <li class="fragment">Use multiple precalculated wavetables</li>
                     </ul>
 				</section>
@@ -545,6 +616,18 @@ function osc_square(omega) {
 				<section>
                     <h2>Bandlimited Square Wave</h2>
                     <img src="images/squarewave.png"/>
+				</section>
+
+				<section>
+                    <h2>Time Domain</h2>
+				</section>
+
+				<section>
+                    <h2>Frequency Domain</h2>
+				</section>
+
+				<section>
+                    <h2>Fourier Transform</h2>
 				</section>
 
 				<section>
@@ -606,16 +689,71 @@ interface AudioContext : EventTarget {
 				</section>
 
                 <section>
-                    <h2></h2>
-                    <ul>
-                        <li></li>
-                        <li class="fragment"></li>
-                    </ul>
-                    <p></p>
+                    <h2>DelayNode Interface</h2>
+                        <code data-trim data-noescape class="no-highlight">
+interface DelayNode : AudioNode {
+
+    readonly attribute AudioParam delayTime;
+
+};
+                        </code>
+                    </pre>
 				</section>
 
+				<section>
+                    <h2>Example: Delay</h2>
+                    <img width="40%" src="images/delay.gv.svg"/>
+                    <p><a href="examples/ex-delay.html" target="_blank">Open example</a></p>
+				</section>
 
+                <section>
+                    <h2>What else?</h2>
+				</section>
 
+                <section>
+                    <h2>DynamicsProcessor</h2>
+				</section>
+
+                <section>
+                    <h2>Waveshaper</h2>
+				</section>
+
+                <section>
+                    <h2>3D Spatialization</h2>
+				</section>
+
+                <section>
+                    <h2>Analyser</h2>
+				</section>
+
+                <section>
+                    <h2>Where to go from here?</h2>
+                    <ul>
+                        <li class="fragment">Check out the examples collection</li>
+                        <li class="fragment">Build your own applications</li>
+                        <li class="fragment">Live input</li>
+                        <li class="fragment">WebRTC</li>
+                        <li class="fragment">Web MIDI API</li>
+                    </ul>
+				</section>
+
+                <!--<section>-->
+                    <!--<h2>What Could be Improved</h2>-->
+                    <!--<ul>-->
+                        <!--<li class="fragment">Audio hardware configuration</li>-->
+                    <!--</ul>-->
+				<!--</section>-->
+
+                <section>
+                    <h1>Questions?</h1>
+				</section>
+
+                <section>
+                    <h1>Au revoir!</h1>
+					<p>
+						<small><a href="http://stuckistucki.com">Philipp Stucki</a> / <a href="http://twitter.com/_phst">@_phst</a></small>
+					</p>
+				</section>
 
 <!--
                 <section>

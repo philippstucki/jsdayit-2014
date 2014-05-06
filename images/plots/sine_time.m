@@ -12,36 +12,44 @@ subplot(5,1,1);
 hold all;
 grid on;
 ylim([-1 1]);
+ylabel('Amplitude');
 plot(t(1:400),Y1(1:400),'LineWidth',1);
 
 subplot(5,1,2);
 hold all;
 grid on;
 ylim([-1 1]);
+ylabel('Amplitude');
 plot(t(1:400),Y2(1:400),'LineWidth',1);
 
 subplot(5,1,3);
 hold all;
 grid on;
 ylim([-1 1]);
+ylabel('Amplitude');
 plot(t(1:400),Y3(1:400),'LineWidth',1);
 
 subplot(5,1,4);
 hold all;
 grid on;
 ylim([-1 1]);
+ylabel('Amplitude');
 plot(t(1:400),Y4(1:400),'LineWidth',1);
 
 subplot(5,1,5);
 hold all;
 grid on;
 ylim([-1 1]);
+xlabel('f');
+ylabel('Amplitude');
 plot(t(1:400),Y5(1:400),'LineWidth',1,'color','red');
 
 figure(2);
 hold all;
 grid on;
 bar(abs(fft(Y5)/500)(1:100),'LineWidth',1,'facecolor','blue')
+xlabel('f');
+ylabel('Amplitude');
 
 saveas(1, 'timedomain.png');
 saveas(2, 'frequencydomain.png');

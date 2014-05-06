@@ -63,7 +63,7 @@
 				<section>
 					<h2>Philipp Stucki</h2>
 					<p>
-						<small><a href="http://stuckistucki.com">Philipp Stucki</a> / <a href="http://twitter.com/_phst">@_phst</a></small>
+						<small><a href="http://twitter.com/_phst">@_phst</a></small>
 					</p>
                     <a href="http://stuckistucki.com">
                         <img width="50%" src="images/stuckistucki.png"></img>
@@ -73,19 +73,17 @@
 				<section>
 					<h2>Web Audio API Overview</h2>
                     <ul>
-                        <li class="fragment">Very high level</li>
-                        <li class="fragment">Implemented in C++</li>
-                        <li class="fragment">Runs in its own high priority thread</li>
-                        <li class="fragment">Modular routing</li>
-                        <li class="fragment">Sample-accurate scheduled playback</li>
-                        <li class="fragment">Low latency</li>
-                        <li class="fragment">Parameter automation</li>
-                        <li class="fragment">Process live audio</li>
-                        <li class="fragment">Generators: oscillator, sample player, live audio</li>
-                        <li class="fragment">Processors: filter, convolver, wave shaper, compressor</li>
-                        <li class="fragment">Audio processing in JavaScript</li>
-                        <li class="fragment">Spatialized audio for 3D effects</li>
-                        <li class="fragment">Real time audio analysis</li>
+                        <li>Very high level</li>
+                        <li>Modular routing</li>
+                        <li>Runs in its own thread</li>
+                        <li>Sample-accurate scheduled playback</li>
+                        <li>Low latency</li>
+                        <li>Parameter automation</li>
+                        <li>Output nodes: oscillator, sample player, live audio</li>
+                        <li>In/out nodes: filter, convolver, wave shaper, compressor</li>
+                        <li>Audio processing in JavaScript</li>
+                        <li>Spatialized audio for 3D effects</li>
+                        <li>Real time audio analysis</li>
                     </ul>
 				</section>
 
@@ -318,12 +316,11 @@ interface BiquadFilterNode : AudioNode {
 				</section>
 
 				<section>
-                    <h1>Side Note</h1>
-				</section>
-
-				<section>
+                    <h1>Aside</h1>
                     <h2>JavaScript Typed Arrays</h2>
-                    <p>Used in many APIs: WebGL, Web Audio API, Canvas, etc.</p>
+                    <aside class="notes"><pre>
+- Used in many APIs: WebGL, Web Audio API, Canvas, etc.
+                    </pre></aside>
 				</section>
 
 				<section>
@@ -377,16 +374,35 @@ interface BiquadFilterNode : AudioNode {
 				<section>
                     <h2>Loading Audio Data</h2>
                     <pre>
+                        <code data-trim data-noescape class="no-highlight">
+interface AudioContext : EventTarget {
+
+    // (...)
+
+    void decodeAudioData(ArrayBuffer audioData,
+                         DecodeSuccessCallback <em>successCallback</em>,
+                         optional DecodeErrorCallback errorCallback);
+
+    // (...)
+
+}
+                        </code>
+                    </pre>
+				</section>
+
+				<section>
+                    <h2>Loading Audio Data</h2>
+                    <pre>
                         <code data-trim data-noescape>
-function loadBuffer(url, dest) {
+function loadBuffer(url, cb) {
     var r = new XMLHttpRequest();
 
-    r.open('GET', url);
+    r.open('GET', url, true);
     r.responseType = 'arraybuffer';
 
     r.onload = function() {
         ctx.decodeAudioData(r.response, function(buffer) {
-            dest.buffer = buffer;
+            cb.call(this, buffer);
         });
     };
 
@@ -414,6 +430,11 @@ interface AudioBuffer {
 };
                         </code>
                     </pre>
+                    <aside class="notes"><pre>
+- in memory audio asset
+- raw and uncompressed
+- range is [-1;1]
+                    </pre></aside>
 				</section>
 
 				<section>
@@ -422,7 +443,7 @@ interface AudioBuffer {
                         <code data-trim data-noescape class="no-highlight">
 Interface AudioBufferSourceNode : AudioNode {
 
-    attribute AudioBuffer? buffer;
+    attribute AudioBuffer? <em>buffer</em>;
 
     readonly attribute AudioParam playbackRate;
 
@@ -438,6 +459,11 @@ Interface AudioBufferSourceNode : AudioNode {
 };
                         </code>
                     </pre>
+                    <aside class="notes"><pre>
+- stop can only be called once
+- throw-away objects
+- buffer remains, is only assigned
+                    </pre></aside>
 				</section>
 
 				<section>
@@ -460,7 +486,8 @@ Interface AudioBufferSourceNode : AudioNode {
 interface ConvolverNode : AudioNode {
 
     attribute AudioBuffer? buffer;
-    attribute boolean normalize;
+
+    // (...)
 
 };
                         </code>
@@ -468,8 +495,18 @@ interface ConvolverNode : AudioNode {
 				</section>
 
 				<section>
-                    <h2>Convolution?</h2>
-                    <h2>Impulse Response?</h2>
+                    <h2>Convolution</h2>
+                    <aside class="notes"><pre>
+- mathematical operation on two functions
+- produces a third function
+- think: blending
+                    </pre></aside>
+				</section>
+
+				<section>
+                    <h2>Impulse Response</h2>
+                    <img src="images/microphones-speaker.png"/>
+                    <audio controls src="examples/audiofiles/hall.mp3"></audio>
 				</section>
 
 				<section>
@@ -504,6 +541,7 @@ interface ConvolverNode : AudioNode {
                     <pre>
                         <code data-trim data-noescape class="no-highlight">
 interface AudioContext : EventTarget {
+
     // (...)
 
     ScriptProcessorNode createScriptProcessor(
@@ -564,7 +602,7 @@ interface AudioBuffer {
 				</section>
 
 				<section>
-                    <h2>Example: Generate White Noise</h2>
+                    <h2>Example: White Noise Generator</h2>
                     <img width="40%" src="images/script.gv.svg"/>
                     <p><a href="examples/ex-script.html" target="_blank">Open example</a></p>
 					<aside class="notes">
@@ -581,13 +619,13 @@ interface AudioBuffer {
 
 				<section>
                     <h2>A Square Wave</h2>
-                    <img width="80%" src="images/squarewave-ideal.png"/>
+                    <img width="60%" src="images/squarewave.svg"/>
 				</section>
 
 				<section>
                     <h2>Example: Square Oscillator in One Line</h2>
                     <p><a href="examples/ex-script-osc.html" target="_blank">Open example</a></p>
-                    <p class="fragment"><a href="examples/ex-vco.html" target="_blank">Open oscillator example</a></p>
+                    <p><a href="examples/ex-vco.html" target="_blank">Open OscillatorNode example</a></p>
 				</section>
 
 				<section>
@@ -605,29 +643,35 @@ interface AudioBuffer {
 				</section>
 
 				<section>
-                    <h2>Oscillators in the Web Audio API</h2>
-                    <ul>
-                        <li class="fragment">Based on IFFT</li>
-                        <li class="fragment">Bandlimited (have limited harmonics)</li>
-                        <li class="fragment">Use multiple precalculated wavetables</li>
-                    </ul>
-				</section>
-
-				<section>
-                    <h2>Bandlimited Square Wave</h2>
-                    <img src="images/squarewave.png"/>
-				</section>
-
-				<section>
-                    <h2>Time Domain</h2>
-				</section>
-
-				<section>
-                    <h2>Frequency Domain</h2>
+                    <h2>Bandlimited Square, Time Domain</h2>
+                    <img width="90%" src="images/plots/timedomain.png"/>
 				</section>
 
 				<section>
                     <h2>Fourier Transform</h2>
+				</section>
+
+				<section>
+                    <h2>Frequency Domain</h2>
+                    <img width="90%" src="images/plots/frequencydomain.png"/>
+				</section>
+
+				<section>
+                    <h2>Inverse Fourier Transform</h2>
+				</section>
+
+				<section>
+                    <h2>Time Domain</h2>
+                    <img width="90%" src="images/plots/timedomain.png"/>
+				</section>
+
+				<section>
+                    <h2>Oscillators in the Web Audio API</h2>
+                    <ul>
+                        <li>Based on IFFT</li>
+                        <li>Bandlimited (have limited harmonics)</li>
+                        <li>Use multiple precalculated wavetables</li>
+                    </ul>
 				</section>
 
 				<section>
@@ -690,13 +734,15 @@ interface AudioContext : EventTarget {
 
                 <section>
                     <h2>DelayNode Interface</h2>
-                        <code data-trim data-noescape class="no-highlight">
+                    <code data-trim data-noescape class="no-highlight">
+                        <pre>
 interface DelayNode : AudioNode {
 
     readonly attribute AudioParam delayTime;
 
 };
-                        </code>
+                        </pre>
+                    </code>
                     </pre>
 				</section>
 
@@ -749,7 +795,7 @@ interface DelayNode : AudioNode {
 				</section>
 
                 <section>
-                    <h1>Au revoir!</h1>
+                    <h1>Arrivederci!</h1>
 					<p>
 						<small><a href="http://stuckistucki.com">Philipp Stucki</a> / <a href="http://twitter.com/_phst">@_phst</a></small>
 					</p>

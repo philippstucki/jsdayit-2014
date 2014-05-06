@@ -26,7 +26,7 @@ osc.frequency.value = 70;
 osc.connect(ctx.destination);
 osc.start(0);
 
-$('#f').on('input', function() {
+$('#f').on('input change', function() {
     osc.frequency.value = $(this).val();
 });
 
@@ -47,7 +47,7 @@ osc.frequency.value = 70;
 osc.connect(ctx.destination);
 osc.start(0);
 
-$('#f').on('input', function() {
+$('#f').on('input change', function() {
     osc.frequency.value = $(this).val();
 });
 

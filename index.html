@@ -97,7 +97,7 @@
                         <li>iOS Safari: Yes</li>
                         <li>Android Chrome: Yes</li>
                         <li>Firefox Chrome: Yes</li>
-                        <li class="fragment">Internet Explorer: Web Audio What?</li>
+                        <li class="fragment">Internet Explorer: Sorry...</li>
                     </ul>
 				</section>
 
@@ -117,18 +117,12 @@
                         <code data-trim data-noescape class="no-highlight">
 interface AudioContext : EventTarget {
 
-    readonly attribute AudioDestinationNode destination;
-    readonly attribute float sampleRate;
-    readonly attribute double currentTime;
-
     // (...)
 
-    AnalyserNode createAnalyser();
+    OscillatorNode createOscillator();
     GainNode createGain();
     DelayNode createDelay(optional double maxDelayTime = 1.0);
     BiquadFilterNode createBiquadFilter();
-    WaveShaperNode createWaveShaper();
-    PannerNode createPanner();
     ConvolverNode createConvolver();
 
     // (...)
@@ -154,9 +148,8 @@ interface AudioContext : EventTarget {
                         <code data-trim data-noescape class="no-highlight">
 interface AudioNode : EventTarget {
 
-    void connect(AudioNode destination, /* ... */);
-    void connect(AudioParam destination, /* ... */);
-    void disconnect(optional unsigned long output = 0);
+    void connect( ... );
+    void disconnect( ... );
 
     readonly attribute AudioContext context;
     readonly attribute unsigned long numberOfInputs;
@@ -194,10 +187,9 @@ interface AudioNode : EventTarget {
                         <code data-trim data-noescape class="no-highlight">
 interface OscillatorNode : AudioNode {
 
-    attribute OscillatorType type;
+    // (...)
 
     readonly attribute <em>AudioParam</em> frequency;
-    readonly attribute <em>AudioParam</em> detune;
 
     void start(double when);
     void stop(double when);
@@ -230,7 +222,6 @@ interface OscillatorNode : AudioNode {
 interface AudioParam {
 
     attribute float value;
-    readonly attribute float defaultValue;
 
     void setValueAtTime(float value, double startTime);
     void linearRampToValueAtTime(float value, double endTime);
@@ -354,19 +345,20 @@ interface BiquadFilterNode : AudioNode {
                         <code data-trim data-noescape>
 > a = new Float32Array(4);
   [0, 0, 0, 0]
-
+<span class="fragment">
 > a[0] = Math.PI;
 > a;
   [3.1415927410125732, 0, 0, 0]
-
+</span><span class="fragment">
 > a.length;
   4
-
+</span><span class="fragment">
 > a.buffer;
   ArrayBuffer {}
-
+</span><span class="fragment">
 > a.buffer.byteLength;
   16
+</span>
                         </code>
                     </pre>
 				</section>
@@ -480,21 +472,6 @@ Interface AudioBufferSourceNode : AudioNode {
 				</section>
 
 				<section>
-                    <h2>ConvolverNode Interface</h2>
-                    <pre>
-                        <code data-trim data-noescape class="no-highlight">
-interface ConvolverNode : AudioNode {
-
-    attribute AudioBuffer? buffer;
-
-    // (...)
-
-};
-                        </code>
-                    </pre>
-				</section>
-
-				<section>
                     <h2>Convolution</h2>
                     <aside class="notes"><pre>
 - mathematical operation on two functions
@@ -507,6 +484,21 @@ interface ConvolverNode : AudioNode {
                     <h2>Impulse Response</h2>
                     <img src="images/microphones-speaker.png"/>
                     <audio controls src="examples/audiofiles/hall.mp3"></audio>
+				</section>
+
+				<section>
+                    <h2>ConvolverNode Interface</h2>
+                    <pre>
+                        <code data-trim data-noescape class="no-highlight">
+interface ConvolverNode : AudioNode {
+
+    attribute AudioBuffer? buffer;
+
+    // (...)
+
+};
+                        </code>
+                    </pre>
 				</section>
 
 				<section>

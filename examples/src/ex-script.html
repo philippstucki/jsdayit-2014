@@ -2,7 +2,8 @@
 {% extends "examples/src/layout.html" %}
 
 {%- macro examplescript() -%}
-var jsProcessor = ctx.createScriptProcessor(4096, 0, 2);
+var jsProcessor = ctx.createScriptProcessor();
+
 jsProcessor.onaudioprocess = function(e) {
     var outData0 = e.outputBuffer.getChannelData(0),
         outData1 = e.outputBuffer.getChannelData(1);

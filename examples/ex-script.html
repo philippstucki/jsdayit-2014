@@ -19,7 +19,8 @@
         <div class="bottom">
             <div class="wrapper">
                 <pre><code>
-var jsProcessor = ctx.createScriptProcessor(4096, 0, 2);
+var jsProcessor = ctx.createScriptProcessor();
+
 jsProcessor.onaudioprocess = function(e) {
     var outData0 = e.outputBuffer.getChannelData(0),
         outData1 = e.outputBuffer.getChannelData(1);
@@ -43,7 +44,8 @@ jsProcessor.onaudioprocess = function(e) {
             $(document).ready( function() {
                 hljs.initHighlightingOnLoad();
             });
-var jsProcessor = ctx.createScriptProcessor(4096, 0, 2);
+var jsProcessor = ctx.createScriptProcessor();
+
 jsProcessor.onaudioprocess = function(e) {
     var outData0 = e.outputBuffer.getChannelData(0),
         outData1 = e.outputBuffer.getChannelData(1);

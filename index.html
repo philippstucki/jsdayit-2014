@@ -117,6 +117,8 @@
                         <code data-trim data-noescape class="no-highlight">
 interface AudioContext : EventTarget {
 
+    readonly attribute AudioDestinationNode destination;
+
     // (...)
 
     OscillatorNode createOscillator();
@@ -152,8 +154,6 @@ interface AudioNode : EventTarget {
     void disconnect( ... );
 
     readonly attribute AudioContext context;
-    readonly attribute unsigned long numberOfInputs;
-    readonly attribute unsigned long numberOfOutputs;
 
     // (...)
 
@@ -743,6 +743,10 @@ interface DelayNode : AudioNode {
 
                 <section>
                     <h2>Waveshaper</h2>
+				</section>
+
+                <section>
+                    <h2>ChannelSplitter, ChannelMerger</h2>
 				</section>
 
                 <section>

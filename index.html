@@ -104,10 +104,10 @@
 				<section>
                     <h2>AudioContext</h2>
                     <ul>
-                        <li class="fragment">Creates all AudioNodes</li>
-                        <li class="fragment">Contains the routing graph</li>
-                        <li class="fragment">AudioDestinationNode is the final node</li>
-                        <li class="fragment">Usually only a single AudioContext is used</li>
+                        <li>Creates all AudioNodes</li>
+                        <li>Contains the routing graph</li>
+                        <li>AudioDestinationNode is the final node</li>
+                        <li>Usually only a single AudioContext is used</li>
                     </ul>
 				</section>
 
@@ -135,10 +135,10 @@ interface AudioContext : EventTarget {
 				<section>
                     <h2>AudioNode</h2>
                     <ul>
-                        <li class="fragment">Building block of an AudioContext</li>
-                        <li class="fragment">Implemented by all input/output and processing nodes</li>
-                        <li class="fragment">Output can be connected to multiple nodes (fan-out)</li>
-                        <li class="fragment">Multiple nodes can be connected as inputs</li>
+                        <li>Building block of an AudioContext</li>
+                        <li>Implemented by all input/output and processing nodes</li>
+                        <li>Output can be connected to multiple nodes (fan-out)</li>
+                        <li>Multiple nodes can be connected as inputs</li>
                     </ul>
 				</section>
 
@@ -165,9 +165,9 @@ interface AudioNode : EventTarget {
 				<section>
                     <h2>Scheduling Audio Events</h2>
                     <ul>
-                        <li class="fragment">Audio events are relative to the context's <em>currentTime</em></li>
-                        <li class="fragment"><em>currentTime</em> starts at zero on context creation and increases in real-time</li>
-                        <li class="fragment"><em>currentTime</em> cannot be stopped or paused</li>
+                        <li>Audio events are relative to the context's <em>currentTime</em></li>
+                        <li><em>currentTime</em> starts at zero on context creation and increases in real-time</li>
+                        <li><em>currentTime</em> cannot be stopped or paused</li>
                     </ul>
 				</section>
 
@@ -204,11 +204,11 @@ interface OscillatorNode : AudioNode {
 				<section>
                     <h2>Audio Parameters</h2>
                     <ul>
-                        <li class="fragment">Affect aspects of an AudioNode's processing</li>
-                        <li class="fragment">Value changes can be immediate</li>
-                        <li class="fragment">Value changes can be automated</li>
-                        <li class="fragment">a-rate parameter: value is sampled on a per-sample basis</li>
-                        <li class="fragment">k-rate parameter: value is sampled on a per-block basis</li>
+                        <li>Affect aspects of an AudioNode's processing</li>
+                        <li>Value changes can be immediate</li>
+                        <li>Value changes can be automated</li>
+                        <li>a-rate parameter: value is sampled on a per-sample basis</li>
+                        <li>k-rate parameter: value is sampled on a per-block basis</li>
                     </ul>
                     <aside class="notes">
                         block length = 128 samples ~ 3ms @ 44.1kHz
@@ -410,14 +410,9 @@ function loadBuffer(url, cb) {
                         <code data-trim data-noescape class="no-highlight">
 interface AudioBuffer {
 
-    readonly attribute float sampleRate;
-    readonly attribute long length;
-
-    readonly attribute double duration;
-
-    readonly attribute long numberOfChannels;
-
     Float32Array getChannelData(unsigned long channel);
+
+    // (...)
 
 };
                         </code>
@@ -443,10 +438,8 @@ Interface AudioBufferSourceNode : AudioNode {
     attribute double loopStart;
     attribute double loopEnd;
 
-    void start(optional double when = 0, optional double offset = 0, optional double duration);
-    void stop(optional double when = 0);
-
-    attribute EventHandler onended;
+    void start(...);
+    void stop(...);
 
 };
                         </code>
@@ -513,9 +506,9 @@ interface ConvolverNode : AudioNode {
 				<section>
                     <h2>Frequency Modulation</h2>
                     <ul>
-                        <li class="fragment">FM is additive</li>
-                        <li class="fragment">Oscillators: operators</li>
-                        <li class="fragment">Oscillator configuration: algorithm</li>
+                        <li>FM is additive</li>
+                        <li>Oscillators: operators</li>
+                        <li>Oscillator configuration: algorithm</li>
                     </ul>
 				</section>
 
@@ -680,8 +673,6 @@ enum OscillatorType {
 
 interface OscillatorNode : AudioNode {
 
-    // (...)
-
     void setPeriodicWave(PeriodicWave periodicWave);
 
     // (...)
@@ -706,8 +697,6 @@ interface PeriodicWave {
                     <pre>
                         <code data-trim data-noescape class="no-highlight">
 interface AudioContext : EventTarget {
-
-    // (...)
 
     PeriodicWave createPeriodicWave(Float32Array real, Float32Array imag);
 
@@ -767,20 +756,22 @@ interface DelayNode : AudioNode {
                 <section>
                     <h2>Where to go from here?</h2>
                     <ul>
-                        <li class="fragment">Check out the examples collection</li>
-                        <li class="fragment">Build your own applications</li>
-                        <li class="fragment">Live input</li>
-                        <li class="fragment">WebRTC</li>
-                        <li class="fragment">Web MIDI API</li>
+                        <li>Check out the examples collection</li>
+                        <li>Build your own applications</li>
+                        <li>Live input</li>
+                        <li>WebRTC</li>
+                        <li>Web MIDI API</li>
+                        <li>OfflineAudioContext</li>
                     </ul>
 				</section>
 
-                <!--<section>-->
-                    <!--<h2>What Could be Improved</h2>-->
-                    <!--<ul>-->
-                        <!--<li class="fragment">Audio hardware configuration</li>-->
-                    <!--</ul>-->
-				<!--</section>-->
+                <section>
+                    <h2>Possible improvements</h2>
+                    <ul>
+                        <li>Audio hardware configuration (interface, sample rate, etc.)</li>
+                        <li>Audio Parameters for ScriptProcessorNodes</li>
+                    </ul>
+                </section>
 
                 <section>
                     <h1>Questions?</h1>
@@ -792,24 +783,6 @@ interface DelayNode : AudioNode {
 						<small><a href="http://stuckistucki.com">Philipp Stucki</a> / <a href="http://twitter.com/_phst">@_phst</a></small>
 					</p>
 				</section>
-
-<!--
-                <section>
-                    <h2></h2>
-                    <ul>
-                        <li></li>
-                        <li class="fragment"></li>
-                    </ul>
-                    <p></p>
-				</section>
-
-				<section>
-                    <h2></h2>
-                    <ul>
-                        <li class="fragment"></li>
-                    </ul>
-				</section>
--->
 
 			</div>
 

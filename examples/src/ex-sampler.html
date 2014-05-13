@@ -21,8 +21,12 @@ function stopLoop() {
 }
 
 function setLoopParams() {
-    drumloop.source.loopStart = drumloop.buffer.duration * $('#loopstart').val();
-    drumloop.source.loopEnd = drumloop.buffer.duration * $('#loopend').val();
+    drumloop.source.loopStart =
+        drumloop.buffer.duration * $('#loopstart').val();
+
+    drumloop.source.loopEnd =
+        drumloop.buffer.duration * $('#loopend').val();
+
     drumloop.source.playbackRate.value = $('#rate').val();
 }
 

@@ -592,14 +592,13 @@ interface AudioBuffer {
 				<section>
                     <h2>Web Audio API Spec on OscillatorNode</h2>
                     <blockquote>
-                        When this waveform is sampled as a discrete-time digital audio signal at a
-                        particular sample-rate, then care must be taken to discard (filter out) the
-                        high-frequency information higher than the Nyquist frequency (half the sample-rate)
+                        When (...) is sampled as a discrete-time digital audio signal at a
+                        particular sample-rate, then care must be taken to discard the
+                        high-frequency information higher than the Nyquist frequency
                         before converting the waveform to a digital form. If this is not done, then aliasing
-                        of higher frequencies (than the Nyquist frequency) will fold back as mirror images
+                        of frequencies higher than the Nyquist frequency will fold back as mirror images
                         into frequencies lower than the Nyquist frequency. In many cases this will cause
-                        audibly objectionable artifacts. This is a basic and well understood principle of
-                        audio DSP.
+                        audibly objectionable artifacts.
                     </blockquote>
 				</section>
 
@@ -748,7 +747,7 @@ interface DelayNode : AudioNode {
 				</section>
 
                 <section>
-                    <h2>Where to go from here?</h2>
+                    <h2>Next?</h2>
                     <ul>
                         <li>Check out the examples collection</li>
                         <li>Build your own applications</li>
@@ -769,6 +768,9 @@ interface DelayNode : AudioNode {
 
                 <section>
                     <h1>Questions?</h1>
+					<p>
+						<small><a href="http://stuckistucki.com">Philipp Stucki</a> / <a href="http://twitter.com/_phst">@_phst</a></small>
+					</p>
 				</section>
 
                 <section>

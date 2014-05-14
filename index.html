@@ -53,14 +53,6 @@
 				</section>
 
 				<section>
-					<h1>Shocking News</h1>
-				</section>
-
-				<section>
-					<h2>It doesn't work on IE</h2>
-				</section>
-
-				<section>
 					<h2>Philipp Stucki</h2>
 					<p>
 						<small><a href="http://twitter.com/_phst">@_phst</a></small>
@@ -84,20 +76,6 @@
                         <li>Audio processing in JavaScript</li>
                         <li>Spatialized audio for 3D effects</li>
                         <li>Real time audio analysis</li>
-                    </ul>
-				</section>
-
-				<section>
-					<h2>Browser Support</h2>
-                    <ul>
-                        <li>Chrome: Yes</li>
-                        <li>Firefox: Yes</li>
-                        <li>Safari: Yes</li>
-                        <li>Opera: Yes</li>
-                        <li>iOS Safari: Yes</li>
-                        <li>Android Chrome: Yes</li>
-                        <li>Firefox Chrome: Yes</li>
-                        <li class="fragment">Internet Explorer: Sorry...</li>
                     </ul>
 				</section>
 
@@ -280,9 +258,7 @@ interface BiquadFilterNode : AudioNode {
     readonly attribute AudioParam Q;
     readonly attribute AudioParam gain;
 
-    void getFrequencyResponse(Float32Array frequencyHz,
-                              Float32Array magResponse,
-                              Float32Array phaseResponse);
+    // (...)
 
 };
                         </code>
@@ -629,7 +605,7 @@ interface AudioBuffer {
 
 				<section>
                     <h2>Bandlimited Square, Time Domain</h2>
-                    <img width="90%" src="images/plots/timedomain.png"/>
+                    <img width="80%" src="images/plots/timedomain.png"/>
 				</section>
 
 				<section>
@@ -638,7 +614,7 @@ interface AudioBuffer {
 
 				<section>
                     <h2>Frequency Domain</h2>
-                    <img width="90%" src="images/plots/frequencydomain.png"/>
+                    <img width="80%" src="images/plots/frequencydomain.png"/>
 				</section>
 
 				<section>
@@ -647,7 +623,7 @@ interface AudioBuffer {
 
 				<section>
                     <h2>Time Domain</h2>
-                    <img width="90%" src="images/plots/timedomain.png"/>
+                    <img width="80%" src="images/plots/timedomain.png"/>
 				</section>
 
 				<section>
@@ -731,6 +707,20 @@ interface DelayNode : AudioNode {
                     <h2>Example: Delay</h2>
                     <img width="40%" src="images/delay.gv.svg"/>
                     <p><a href="examples/ex-delay.html" target="_blank">Open example</a></p>
+				</section>
+
+				<section>
+					<h2>Browser Support</h2>
+                    <ul>
+                        <li>Chrome: Yes</li>
+                        <li>Firefox: Yes</li>
+                        <li>Safari: Yes</li>
+                        <li>Opera: Yes</li>
+                        <li>iOS Safari: Yes</li>
+                        <li>Android Chrome: Yes</li>
+                        <li>Firefox Chrome: Yes</li>
+                        <li class="fragment">Internet Explorer: Sorry...</li>
+                    </ul>
 				</section>
 
                 <section>

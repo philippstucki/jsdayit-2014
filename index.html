@@ -68,7 +68,6 @@
                         <li>Very high level</li>
                         <li>Modular routing</li>
                         <li>Runs in its own thread</li>
-                        <li>Sample-accurate scheduled playback</li>
                         <li>Low latency</li>
                         <li>Parameter automation</li>
                         <li>Output nodes: oscillator, sample player, live audio</li>
@@ -93,7 +92,7 @@
                     <h2>AudioContext Interface</h2>
                     <pre>
                         <code data-trim data-noescape class="no-highlight">
-interface AudioContext : EventTarget {
+interface AudioContext {
 
     readonly attribute AudioDestinationNode destination;
 
@@ -126,7 +125,7 @@ interface AudioContext : EventTarget {
                     <h2>AudioNode Interface</h2>
                     <pre>
                         <code data-trim data-noescape class="no-highlight">
-interface AudioNode : EventTarget {
+interface AudioNode {
 
     void connect( ... );
     void disconnect( ... );
@@ -246,15 +245,13 @@ interface GainNode : AudioNode {
                     <pre>
                         <code data-trim data-noescape class="no-highlight">
 enum BiquadFilterType {
-    "lowpass", "highpass", "bandpass", "lowshelf",
-    "highshelf", "peaking", "notch", "allpass"
+    "lowpass", "highpass", "bandpass", "lowshelf", (...)
 };
 
 interface BiquadFilterNode : AudioNode {
 
     attribute BiquadFilterType type;
     readonly attribute AudioParam frequency;
-    readonly attribute AudioParam detune;
     readonly attribute AudioParam Q;
     readonly attribute AudioParam gain;
 
@@ -280,6 +277,15 @@ interface BiquadFilterNode : AudioNode {
                     <a target="_blank" href="http://orm-other.s3.amazonaws.com/webaudioapi/samples/frequency-response/index.html">
                         <img src="images/filter_frequencyresponse.png">
                     </a>
+				</section>
+
+				<section>
+                    <h2>Example: Frequency Modulation</h2>
+                    <img width="40%" src="images/fm.gv.svg"/>
+                    <p><a href="examples/ex-fm.html" target="_blank">Open example</a></p>
+					<aside class="notes">
+                        Show example!!
+                    </aside>
 				</section>
 
 				<section>
@@ -343,7 +349,7 @@ interface BiquadFilterNode : AudioNode {
                     <h2>Loading Audio Data</h2>
                     <pre>
                         <code data-trim data-noescape class="no-highlight">
-interface AudioContext : EventTarget {
+interface AudioContext {
 
     // (...)
 
@@ -436,10 +442,6 @@ Interface AudioBufferSourceNode : AudioNode {
                     </aside>
 				</section>
 
-				<section data-background="#fff">
-                    <img src="images/gulp.png"/>
-				</section>
-
 				<section>
                     <h2>Convolution</h2>
                     <aside class="notes"><pre>
@@ -480,36 +482,14 @@ interface ConvolverNode : AudioNode {
 				</section>
 
 				<section>
-                    <h2>Frequency Modulation</h2>
-                    <ul>
-                        <li>FM is additive</li>
-                        <li>Oscillators: operators</li>
-                        <li>Oscillator configuration: algorithm</li>
-                    </ul>
-				</section>
-
-				<section>
-                    <h2>Example: Modulator, Carrier</h2>
-                    <img width="40%" src="images/fm.gv.svg"/>
-                    <p><a href="examples/ex-fm.html" target="_blank">Open example</a></p>
-					<aside class="notes">
-                        Show example!!
-                    </aside>
-				</section>
-
-				<section>
                     <h2>ScriptProcessorNode</h2>
                     <pre>
                         <code data-trim data-noescape class="no-highlight">
-interface AudioContext : EventTarget {
+interface AudioContext {
 
     // (...)
 
-    ScriptProcessorNode createScriptProcessor(
-        optional unsigned long bufferSize = 0,
-        optional unsigned long numberOfInputChannels = 2,
-        optional unsigned long numberOfOutputChannels = 2
-    );
+    ScriptProcessorNode createScriptProcessor(...);
 
     // (...)
 }
@@ -525,7 +505,7 @@ interface ScriptProcessorNode : AudioNode {
 
     attribute EventHandler onaudioprocess;
 
-    readonly attribute long bufferSize;
+    // (...)
 
 };
                         </code>
@@ -612,7 +592,7 @@ interface AudioBuffer {
 				</section>
 
 				<section>
-                    <h2>Frequency Domain</h2>
+                    <h2>Bandlimited Square, Frequency Domain</h2>
                     <img width="80%" src="images/plots/frequencydomain.png"/>
 				</section>
 
@@ -621,14 +601,14 @@ interface AudioBuffer {
 				</section>
 
 				<section>
-                    <h2>Time Domain</h2>
+                    <h2>Bandlimited Square, Time Domain</h2>
                     <img width="80%" src="images/plots/timedomain.png"/>
 				</section>
 
 				<section>
                     <h2>Oscillators in the Web Audio API</h2>
                     <ul>
-                        <li>Based on IFFT</li>
+                        <li>Based on Inverse Fourier Transform</li>
                         <li>Bandlimited (have limited harmonics)</li>
                         <li>Use multiple precalculated wavetables</li>
                     </ul>
@@ -671,7 +651,7 @@ interface PeriodicWave {
                     <h2>AudioContext.createPeriodicWave</h2>
                     <pre>
                         <code data-trim data-noescape class="no-highlight">
-interface AudioContext : EventTarget {
+interface AudioContext {
 
     PeriodicWave createPeriodicWave(Float32Array real, Float32Array imag);
 
@@ -717,7 +697,7 @@ interface DelayNode : AudioNode {
                         <li>Opera: Yes</li>
                         <li>iOS Safari: Yes</li>
                         <li>Android Chrome: Yes</li>
-                        <li>Firefox Chrome: Yes</li>
+                        <li>Android Firefox: Yes</li>
                         <li class="fragment">Internet Explorer: Sorry...</li>
                     </ul>
 				</section>
